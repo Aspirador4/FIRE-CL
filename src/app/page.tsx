@@ -26,7 +26,27 @@ import Link from 'next/link';
 
 export default function HomePage() {
   const [currencyMode, setCurrencyMode] = useState<CurrencyMode>('CLP');
-  const ufRate = DEFAULT_CHILE_PARAMS.uf;
+  const [ufRate, setUfRate] = useState<number>(DEFAULT_CHILE_PARAMS.uf);
+  const [isLiveUf, setIsLiveUf] = useState<boolean>(false);
+
+  // Consulta automática de la UF oficial en vivo del Banco Central
+  useEffect(() => {
+    async function loadLiveUf() {
+      try {
+        const res = await fetch('/api/uf');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.uf && typeof data.uf === 'number') {
+            setUfRate(data.uf);
+            setIsLiveUf(data.isLive);
+          }
+        }
+      } catch (err) {
+        console.warn('Error al obtener UF en vivo:', err);
+      }
+    }
+    loadLiveUf();
+  }, []);
 
   // Estado principal de la simulación FIRE
   const [simInput, setSimInput] = useState<FireSimulationInput>({
@@ -97,6 +117,7 @@ export default function HomePage() {
         currencyMode={currencyMode}
         onCurrencyToggle={setCurrencyMode}
         ufRate={ufRate}
+        isLiveUf={isLiveUf}
         onDownloadPdf={handleDownloadPdf}
       />
 
@@ -105,7 +126,9 @@ export default function HomePage() {
         <section className="print:hidden text-center space-y-4 max-w-3xl mx-auto pt-4 pb-2">
           <div className="inline-flex items-center space-x-2 rounded-full border border-black/[0.08] bg-white/80 px-4 py-1 text-[12px] font-mono tracking-tight text-neutral-700 shadow-[0_1px_2px_rgba(10,10,10,0.03)] dark:border-white/[0.1] dark:bg-neutral-900/80 dark:text-neutral-300">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span>CALCULADORA DE RETIRO CHILE · MODELO DUAL</span>
+            <span>
+              CALCULADORA DE RETIRO CHILE · UF HOY: ${ufRate.toLocaleString('es-CL', { maximumFractionDigits: 0 })}
+            </span>
           </div>
 
           <h1 className="text-4xl sm:text-6xl lg:text-[68px] font-semibold tracking-[-0.035em] leading-[1.06] text-[#0a0a0a] dark:text-white">

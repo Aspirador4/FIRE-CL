@@ -9,13 +9,15 @@ interface HeaderProps {
   currencyMode?: CurrencyMode;
   onCurrencyToggle?: (mode: CurrencyMode) => void;
   ufRate?: number;
+  isLiveUf?: boolean;
   onDownloadPdf?: () => void;
 }
 
 export function Header({
   currencyMode = 'CLP',
   onCurrencyToggle,
-  ufRate = 38500,
+  ufRate = 41269,
+  isLiveUf = false,
   onDownloadPdf,
 }: HeaderProps) {
   const [copied, setCopied] = useState(false);
@@ -50,6 +52,15 @@ export function Header({
 
         {/* Action Controls */}
         <div className="flex items-center space-x-2 sm:space-x-2.5">
+          {/* Micro-indicador de UF en vivo */}
+          <div
+            className="hidden lg:flex items-center space-x-1.5 rounded-full border border-black/[0.06] bg-white/60 px-2.5 py-1 text-[11px] font-mono text-neutral-600 dark:border-white/[0.08] dark:bg-neutral-900/60 dark:text-neutral-300"
+            title={isLiveUf ? 'Valor oficial UF del Banco Central en tiempo real' : 'Valor referencial de la UF'}
+          >
+            <span className={`h-1.5 w-1.5 rounded-full ${isLiveUf ? 'bg-emerald-500 animate-pulse' : 'bg-neutral-400'}`} />
+            <span>1 UF = ${ufRate.toLocaleString('es-CL', { maximumFractionDigits: 0 })}</span>
+          </div>
+
           {/* Currency Switcher */}
           {onCurrencyToggle && (
             <div className="flex items-center rounded-full border border-black/[0.08] bg-white/80 p-0.5 text-[12.5px] font-medium shadow-[0_1px_2px_rgba(10,10,10,0.03)] dark:border-white/[0.1] dark:bg-neutral-900/80">
@@ -70,7 +81,7 @@ export function Header({
                     ? 'bg-[#0a0a0a] text-white shadow-sm dark:bg-white dark:text-[#0a0a0a]'
                     : 'text-neutral-600 hover:text-[#0a0a0a] dark:text-neutral-400 dark:hover:text-white'
                 }`}
-                title={`Valor de referencia: 1 UF = $${ufRate.toLocaleString('es-CL')}`}
+                title={`Valor oficial UF Banco Central: $${ufRate.toLocaleString('es-CL', { maximumFractionDigits: 0 })}`}
               >
                 UF
               </button>

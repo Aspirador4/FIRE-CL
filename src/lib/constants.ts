@@ -11,8 +11,8 @@ export interface ChileanEconomicParams {
 }
 
 export const DEFAULT_CHILE_PARAMS: ChileanEconomicParams = {
-  uf: 38500,
-  utm: 67000,
+  uf: 41269, // Valor UF en CLP (Referencia Banco Central)
+  utm: 72440, // Valor UTM en CLP (Referencia SII)
   pguMonthly: 214296,
   topeImponibleAfpUF: 84.3,
   topeImponibleAfcUF: 126.6,
