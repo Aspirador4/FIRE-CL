@@ -91,17 +91,34 @@ input[type="range"]::-webkit-slider-thumb:active {
 
 /* Reglas de impresión para el reporte PDF */
 @media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  html,
   body {
     background: #ffffff !important;
     color: #0a0a0a !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-font-smoothing: antialiased;
   }
 
-  header, footer, nav, .print\:hidden {
+  header,
+  footer,
+  nav,
+  .print\:hidden {
     display: none !important;
   }
 
   @page {
-    margin: 1.2cm;
+    margin: 1.2cm 1cm;
     size: A4 portrait;
+  }
+
+  .break-inside-avoid {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
   }
 }
