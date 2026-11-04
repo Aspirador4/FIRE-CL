@@ -3,18 +3,20 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { CurrencyMode } from '@/lib/formatters';
-import { Clock, Share2, Check, BookOpen, ArrowUpRight } from 'lucide-react';
+import { Clock, Share2, Check, BookOpen, ArrowUpRight, Printer } from 'lucide-react';
 
 interface HeaderProps {
   currencyMode?: CurrencyMode;
   onCurrencyToggle?: (mode: CurrencyMode) => void;
   ufRate?: number;
+  onDownloadPdf?: () => void;
 }
 
 export function Header({
   currencyMode = 'CLP',
   onCurrencyToggle,
   ufRate = 38500,
+  onDownloadPdf,
 }: HeaderProps) {
   const [copied, setCopied] = useState(false);
 
@@ -92,6 +94,18 @@ export function Header({
               </>
             )}
           </button>
+
+          {/* PDF Report Button */}
+          {onDownloadPdf && (
+            <button
+              onClick={onDownloadPdf}
+              className="inline-flex items-center space-x-1.5 rounded-full border border-black/[0.08] bg-white/90 px-3 py-1.5 text-[13px] font-medium text-neutral-800 shadow-[0_1px_2px_rgba(10,10,10,0.02)] transition-all duration-150 hover:border-black/20 hover:bg-white active:scale-[0.97] dark:border-white/[0.1] dark:bg-neutral-900 dark:text-neutral-200"
+              title="Guardar o imprimir reporte en PDF"
+            >
+              <Printer className="h-3.5 w-3.5 text-neutral-500" />
+              <span className="hidden md:inline">Reporte PDF</span>
+            </button>
+          )}
 
           {/* Guía FIRE Button */}
           <Link

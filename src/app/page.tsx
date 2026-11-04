@@ -9,6 +9,7 @@ import { FireCharts } from '@/components/FireCharts';
 import { FireInputForm } from '@/components/FireInputForm';
 import { ChildManager } from '@/components/ChildManager';
 import { SensitivityTable } from '@/components/SensitivityTable';
+import { FirePdfReport } from '@/components/FirePdfReport';
 import {
   FireSimulationInput,
   runFireSimulation,
@@ -83,6 +84,12 @@ export default function HomePage() {
   // Ejecución de la simulación
   const simulationResult: FireSimulationResult = runFireSimulation(simInput);
 
+  const handleDownloadPdf = () => {
+    if (typeof window !== 'undefined') {
+      window.print();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#f5f4f2] text-[#0a0a0a] antialiased dark:bg-[#121211] dark:text-[#f4f4f2] flex flex-col justify-between">
       {/* Header */}
@@ -90,11 +97,12 @@ export default function HomePage() {
         currencyMode={currencyMode}
         onCurrencyToggle={setCurrencyMode}
         ufRate={ufRate}
+        onDownloadPdf={handleDownloadPdf}
       />
 
       <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 space-y-8">
         {/* Hero Section al estilo TasteSkill */}
-        <section className="text-center space-y-4 max-w-3xl mx-auto pt-4 pb-2">
+        <section className="print:hidden text-center space-y-4 max-w-3xl mx-auto pt-4 pb-2">
           <div className="inline-flex items-center space-x-2 rounded-full border border-black/[0.08] bg-white/80 px-4 py-1 text-[12px] font-mono tracking-tight text-neutral-700 shadow-[0_1px_2px_rgba(10,10,10,0.03)] dark:border-white/[0.1] dark:bg-neutral-900/80 dark:text-neutral-300">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
             <span>CALCULADORA DE RETIRO CHILE · MODELO DUAL</span>
@@ -110,30 +118,44 @@ export default function HomePage() {
         </section>
 
         {/* Banner Publicitario Superior */}
-        <AdBanner slotId="1000000010" format="horizontal" label="Publicidad" />
+        <div className="print:hidden">
+          <AdBanner slotId="1000000010" format="horizontal" label="Publicidad" />
+        </div>
 
         {/* Tarjetas KPI de Resumen */}
-        <MetricCards
+        <div className="print:hidden">
+          <MetricCards
+            result={simulationResult}
+            currencyMode={currencyMode}
+            ufRate={ufRate}
+            edadActual={simInput.edadActual}
+          />
+        </div>
+
+        {/* Generador y Exportación de Reporte Ejecutivo PDF */}
+        <FirePdfReport
           result={simulationResult}
+          input={simInput}
           currencyMode={currencyMode}
           ufRate={ufRate}
-          edadActual={simInput.edadActual}
         />
 
         {/* Gráfico Principal de Cruce FIRE */}
-        <FireCharts
-          data={simulationResult.trayectoriaAnual}
-          currencyMode={currencyMode}
-          ufRate={ufRate}
-          edadActual={simInput.edadActual}
-          edadFire={simulationResult.edadFirePuente}
-          edadLegal={simulationResult.edadLegalRetiro}
-          metaFire={simulationResult.metaPatrimonioFire}
-          tieneHijos={simInput.hijos.length > 0}
-        />
+        <div className="print:hidden">
+          <FireCharts
+            data={simulationResult.trayectoriaAnual}
+            currencyMode={currencyMode}
+            ufRate={ufRate}
+            edadActual={simInput.edadActual}
+            edadFire={simulationResult.edadFirePuente}
+            edadLegal={simulationResult.edadLegalRetiro}
+            metaFire={simulationResult.metaPatrimonioFire}
+            tieneHijos={simInput.hijos.length > 0}
+          />
+        </div>
 
         {/* Controles y Formularios */}
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+        <div className="print:hidden grid grid-cols-1 gap-8 lg:grid-cols-12">
           {/* Columna Izquierda: Entradas de la Calculadora (7 columnas) */}
           <div className="space-y-6 lg:col-span-7">
             {/* Formulario Principal de Inputs */}
@@ -210,7 +232,9 @@ export default function HomePage() {
         </div>
 
         {/* Banner Publicitario Inferior */}
-        <AdBanner slotId="1000000012" format="horizontal" label="Publicidad" />
+        <div className="print:hidden">
+          <AdBanner slotId="1000000012" format="horizontal" label="Publicidad" />
+        </div>
       </main>
 
       <Footer />

@@ -88,3 +88,20 @@ input[type="range"]::-webkit-slider-thumb:hover {
 input[type="range"]::-webkit-slider-thumb:active {
   transform: scale(0.95);
 }
+
+/* Reglas de impresión para el reporte PDF */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #0a0a0a !important;
+  }
+
+  header, footer, nav, .print\:hidden {
+    display: none !important;
+  }
+
+  @page {
+    margin: 1.2cm;
+    size: A4 portrait;
+  }
+}
