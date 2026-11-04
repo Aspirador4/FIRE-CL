@@ -74,14 +74,49 @@ export interface FireSimulationResult {
   trayectoriaAnual: SimulationYearData[];
 }
 
-// Estima la pensión mensual que generará el saldo AFP a la edad legal de retiro (estimación actuarial aproximada en UF/CLP)
-// En Chile una pensión por retiro programado o renta vitalicia ronda entre 5.0% y 5.5% anual del fondo acumulado a la edad legal.
+/**
+ * Capital Necesario Unitario (CNU) según las Tablas de Mortalidad Oficiales
+ * de la Superintendencia de Pensiones de Chile (CB-H-2020 y CB-M-2020).
+ * El CNU representa cuántas unidades de capital se necesitan a cada edad para financiar 1 unidad anual de pensión.
+ * La tasa anual de retiro en la modalidad de Retiro Programado es exactamente: 1 / CNU(edad, genero).
+ */
+export function getCnuActuarial(edad: number, genero: 'hombre' | 'mujer'): number {
+  if (genero === 'hombre') {
+    if (edad <= 60) return 21.0;
+    if (edad <= 65) return 21.0 - ((edad - 60) / 5) * (21.0 - 18.5);
+    if (edad <= 70) return 18.5 - ((edad - 65) / 5) * (18.5 - 15.2);
+    if (edad <= 75) return 15.2 - ((edad - 70) / 5) * (15.2 - 12.1);
+    if (edad <= 80) return 12.1 - ((edad - 75) / 5) * (12.1 - 9.2);
+    if (edad <= 85) return 9.2 - ((edad - 80) / 5) * (9.2 - 6.6);
+    if (edad <= 90) return 6.6 - ((edad - 85) / 5) * (6.6 - 4.4);
+    // Para mayores de 90 años
+    return Math.max(2.5, 4.4 - ((edad - 90) / 5) * (4.4 - 3.0));
+  } else {
+    if (edad <= 60) return 22.0;
+    if (edad <= 65) return 22.0 - ((edad - 60) / 5) * (22.0 - 19.5);
+    if (edad <= 70) return 19.5 - ((edad - 65) / 5) * (19.5 - 16.5);
+    if (edad <= 75) return 16.5 - ((edad - 70) / 5) * (16.5 - 13.5);
+    if (edad <= 80) return 13.5 - ((edad - 75) / 5) * (13.5 - 10.4);
+    if (edad <= 85) return 10.4 - ((edad - 80) / 5) * (10.4 - 7.5);
+    if (edad <= 90) return 7.5 - ((edad - 85) / 5) * (7.5 - 4.9);
+    // Para mayores de 90 años
+    return Math.max(2.8, 4.9 - ((edad - 90) / 5) * (4.9 - 3.2));
+  }
+}
+
+/**
+ * Estima la pensión mensual que genera un saldo de AFP a una edad específica
+ * bajo la modalidad de Retiro Programado (recalculada anualmente según CNU).
+ */
 export function estimateMonthlyPensionAfp(
   saldoAfpAcumulado: number,
-  genero: 'hombre' | 'mujer'
+  genero: 'hombre' | 'mujer',
+  edad: number = 65
 ): number {
-  const tasaConversionAnual = genero === 'hombre' ? 0.054 : 0.048; // Mujeres viven más años en promedio según tablas SP
-  return (saldoAfpAcumulado * tasaConversionAnual) / 12;
+  if (saldoAfpAcumulado <= 0) return 0;
+  const cnu = getCnuActuarial(edad, genero);
+  const pensionAnual = saldoAfpAcumulado / cnu;
+  return pensionAnual / 12;
 }
 
 export function runFireSimulation(
@@ -308,14 +343,17 @@ function simulateTrajectory(
           pguAnual = input.montoPguMensual * 12;
         }
 
-        // Pensión AFP
+        // Pensión AFP recalculada anualmente mediante el CNU actuarial de la edad en curso
         const pensionMensual = estimateMonthlyPensionAfp(
           currentAfp,
-          input.genero
+          input.genero,
+          age
         );
         pensionAnualAfp = pensionMensual * 12;
-        // La pensión se extrae del fondo AFP
-        currentAfp = Math.max(0, currentAfp * (1 + returnAfp) - pensionAnualAfp);
+
+        // Por ley chilena (DL 3.500), durante el retiro el fondo pasa a carteras conservadoras (Fondo D o E: ~2.0% real anual)
+        const returnAfpRetiro = DEFAULT_CHILE_PARAMS.rentabilidadAfpRetiroRealPct;
+        currentAfp = Math.max(0, currentAfp * (1 + returnAfpRetiro) - pensionAnualAfp);
 
         // La diferencia entre el gasto deseado y (Pensión AFP + PGU + extras) se saca del portafolio líquido
         const ingresoPensional = pensionAnualAfp + pguAnual + extraIngresosAnual;
@@ -378,7 +416,7 @@ function checkCanRetire(
 
   // Si ya pasó la edad legal de retiro:
   if (edad >= edadLegal) {
-    const pensionAfpMensual = estimateMonthlyPensionAfp(afp, genero);
+    const pensionAfpMensual = estimateMonthlyPensionAfp(afp, genero, edad);
     const pguMensual = incluirPgu && edad >= 65 ? montoPguMensual : 0;
     const ingresoPensionalAnual = (pensionAfpMensual + pguMensual) * 12 + extraIngresos;
     const faltante = Math.max(0, gastoRetiroAnual + extraGastos - ingresoPensionalAnual);
@@ -401,7 +439,7 @@ function checkCanRetire(
 
   // Saldo AFP a los 60/65 proyectado sin nuevos aportes
   const simAfp = afp * Math.pow(1 + rAfp, anosPuente);
-  const pensionAfpMensual = estimateMonthlyPensionAfp(simAfp, genero);
+  const pensionAfpMensual = estimateMonthlyPensionAfp(simAfp, genero, edadLegal);
   const pguMensual = incluirPgu ? montoPguMensual : 0;
   const ingresoPensionalAnual = (pensionAfpMensual + pguMensual) * 12;
 

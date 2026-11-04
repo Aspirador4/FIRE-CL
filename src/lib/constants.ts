@@ -8,6 +8,7 @@ export interface ChileanEconomicParams {
   afpAvgComisionPct: number; // Comisión promedio (~1.15%)
   saludLegalPct: number; // 7%
   afcTrabajadorPct: number; // 0.6% contrato indefinido
+  rentabilidadAfpRetiroRealPct: number; // Rentabilidad real anual regulada en fondos conservadores D/E post-retiro (~2.0%)
 }
 
 export const DEFAULT_CHILE_PARAMS: ChileanEconomicParams = {
@@ -20,6 +21,7 @@ export const DEFAULT_CHILE_PARAMS: ChileanEconomicParams = {
   afpAvgComisionPct: 0.0115,
   saludLegalPct: 0.07,
   afcTrabajadorPct: 0.006,
+  rentabilidadAfpRetiroRealPct: 0.02, // 2.0% real anual Fondo D/E
 };
 
 // Tramos mensuales del Impuesto Único de Segunda Categoría (en UTM)

@@ -233,10 +233,10 @@ export default function HomePage() {
 
                 <div className="rounded-xl border border-black/[0.05] bg-[#fafaf8] p-3 dark:border-white/[0.06] dark:bg-[#222220]">
                   <span className="font-semibold text-[#0a0a0a] dark:text-white block text-[13px]">
-                    2. La Pensión Legal (Fondo AFP + PGU)
+                    2. La Pensión Legal (Retiro Programado AFP + PGU)
                   </span>
                   <p className="text-neutral-600 dark:text-neutral-400 mt-1 text-[12px] leading-relaxed">
-                    Al cumplir la edad legal, tu fondo acumulado en AFP entra a pagar una pensión mensual vitalicia, reduciendo la exigencia a tu portafolio libre.
+                    Al cumplir los 60/65 años, tu saldo en AFP pasa a fondos conservadores (Fondo D o E) y se reparte anualmente según las tablas de mortalidad oficiales (CNU). Tu fondo previsional desciende gradualmente pagando tu jubilación, aliviando de manera decisiva la carga sobre tu portafolio libre.
                   </p>
                 </div>
               </div>

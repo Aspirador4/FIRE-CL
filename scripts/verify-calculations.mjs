@@ -63,4 +63,23 @@ console.log(`✓ Inversión total estimada en crianza: $${Math.round(simResult.i
 console.log(`✓ Meta FIRE patrimonial: $${Math.round(simResult.metaPatrimonioFire).toLocaleString('es-CL')}`);
 console.log('✅ Test 2 aprobado con éxito.\n');
 
+// Test 3: Modelo Actuarial de Desacumulación AFP post-retiro legal (CNU dinámico + Fondo D/E)
+console.log('Test 3: Desacumulación actuarial de la AFP después de los 65 años');
+const afpAt65 = simResult.trayectoriaAnual.find((y) => y.edad === 65)?.patrimonioAfp || 0;
+const afpAt75 = simResult.trayectoriaAnual.find((y) => y.edad === 75)?.patrimonioAfp || 0;
+const afpAt85 = simResult.trayectoriaAnual.find((y) => y.edad === 85)?.patrimonioAfp || 0;
+const afpAt90 = simResult.trayectoriaAnual.find((y) => y.edad === 90)?.patrimonioAfp || 0;
+
+assert(afpAt65 > 0, 'Debe haber saldo acumulado en AFP a los 65 años');
+assert(afpAt75 < afpAt65, 'El saldo AFP a los 75 debe ser menor que a los 65 debido a retiros de pensión');
+assert(afpAt85 < afpAt75, 'El saldo AFP a los 85 debe seguir descendiendo progresivamente');
+assert(afpAt90 < afpAt85, 'El saldo AFP a los 90 debe tender al agotamiento natural');
+assert(afpAt90 < afpAt65 * 0.25, 'A los 90 años el fondo debe haberse pagado en más de un 75% en pensiones');
+
+console.log(`✓ Saldo AFP a los 65 años (Pico Histórico): $${Math.round(afpAt65).toLocaleString('es-CL')}`);
+console.log(`✓ Saldo AFP a los 75 años (-${Math.round((1 - afpAt75 / afpAt65) * 100)}%): $${Math.round(afpAt75).toLocaleString('es-CL')}`);
+console.log(`✓ Saldo AFP a los 85 años (-${Math.round((1 - afpAt85 / afpAt65) * 100)}%): $${Math.round(afpAt85).toLocaleString('es-CL')}`);
+console.log(`✓ Saldo AFP a los 90 años (-${Math.round((1 - afpAt90 / afpAt65) * 100)}%): $${Math.round(afpAt90).toLocaleString('es-CL')}`);
+console.log('✅ Test 3 aprobado con éxito.\n');
+
 console.log('🎉 Todos los tests del motor de cálculo fueron superados satisfactoriamente.');

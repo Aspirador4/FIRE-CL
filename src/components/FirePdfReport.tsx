@@ -466,7 +466,7 @@ export function FirePdfReport({
                 </h3>
               </div>
               <p className="text-[10.5px] text-neutral-600 leading-relaxed">
-                Al cumplir la edad legal, tu fondo acumulado en AFP se transforma en pensión mensual autofinanciada, complementada por la PGU estatal. Esto disminuye drásticamente la exigencia sobre tu portafolio libre, blindando tu longevidad.
+                Al cumplir la edad legal, tu fondo en AFP pasa a carteras conservadoras (Fondo D o E) y se desacumula anualmente según las tablas de mortalidad oficiales (CNU), transformándose en pensión mensual autofinanciada y complementada por la PGU estatal. Esto disminuye drásticamente la exigencia sobre tu portafolio libre, blindando tu longevidad.
               </p>
               <div className="text-[9.5px] font-mono text-neutral-500 pt-0.5">
                 Saldo AFP actual: {formatMoney(input.saldoAfpInicial, currencyMode, ufRate)}
