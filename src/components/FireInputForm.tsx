@@ -38,7 +38,7 @@ export function FireInputForm({
   currencyMode,
   ufRate,
 }: FireInputFormProps) {
-  // Modo de ingreso principal: 'liquido' (unificado por defecto) o 'bruto' (opcional)
+  // Modo de ingreso: 'liquido' (por defecto) o 'bruto'
   const [inputSalaryMode, setInputSalaryMode] = useState<'liquido' | 'bruto'>('liquido');
   const [enteredBruto, setEnteredBruto] = useState<number>(2500000);
 
@@ -149,40 +149,39 @@ export function FireInputForm({
     }
   };
 
+  // Conversión con espacio no separable para evitar cualquier salto de línea
   const toUf = (clp: number) => {
-    if (!ufRate || ufRate <= 0) return '0 UF';
+    if (!ufRate || ufRate <= 0) return '0\u00A0UF';
     const val = clp / ufRate;
     return `${val.toLocaleString('es-CL', {
       minimumFractionDigits: 1,
       maximumFractionDigits: 1,
-    })} UF`;
+    })}\u00A0UF`;
   };
-
-  const topeAfpClp = dynamicParams.topeImponibleAfpUF * dynamicParams.uf;
 
   return (
     <div className="space-y-6">
       {/* 1. Perfil y Horizonte de Jubilación */}
       <div className="border-2 border-black bg-white p-5 sm:p-6 shadow-[4px_4px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
         <div className="mb-4 flex items-center justify-between border-b-2 border-black/10 pb-2.5 dark:border-zinc-800">
-          <span className="font-mono text-xs font-black uppercase tracking-wider text-black dark:text-zinc-200">
-            [ 01 // PERFIL & HORIZONTE ]
+          <span className="font-mono text-xs font-bold uppercase tracking-wider text-black dark:text-zinc-200">
+            01 / Perfil y Horizonte
           </span>
         </div>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           {/* Edad Actual */}
           <div>
-            <div className="flex items-center justify-between text-xs font-bold text-black dark:text-white uppercase font-mono">
+            <div className="h-6 flex items-center justify-between text-xs font-mono font-bold text-neutral-900 dark:text-neutral-100">
               <span className="inline-flex items-center space-x-1.5">
-                <span>Tu Edad Actual:</span>
+                <span>Tu edad actual:</span>
                 <InfoTooltip
-                  title="Tu Edad Actual"
+                  title="Tu edad actual"
                   content="Punto de partida de tu plan. Determina los años que tienes para que el interés compuesto haga crecer tu patrimonio antes de retirarte."
                 />
               </span>
-              <span className="border-2 border-black bg-[#facc15] px-2 py-0.5 text-black font-black shadow-[1.5px_1.5px_0px_0px_#000] dark:border-zinc-200">
-                {input.edadActual} AÑOS
+              <span className="border-2 border-black bg-[#facc15] px-2 py-0.5 text-black font-black text-xs shadow-[1.5px_1.5px_0px_0px_#000] dark:border-zinc-200 whitespace-nowrap shrink-0">
+                {input.edadActual} años
               </span>
             </div>
             <input
@@ -197,18 +196,18 @@ export function FireInputForm({
 
           {/* Género (Edad legal de jubilación) */}
           <div>
-            <span className="inline-flex items-center space-x-1.5 text-xs font-bold text-black dark:text-white uppercase font-mono">
-              <span>Edad Legal Pensión AFP:</span>
+            <div className="h-6 flex items-center space-x-1.5 text-xs font-mono font-bold text-neutral-900 dark:text-neutral-100">
+              <span>Edad legal pensión AFP:</span>
               <InfoTooltip
-                title="Edad Legal de Pensión en Chile"
+                title="Edad legal de pensión en Chile"
                 content="Por ley en Chile, mujeres a los 60 años y hombres a los 65 años. A esa edad se desbloquea tu AFP y la PGU. Todo retiro previo se financia de tu portafolio libre (fase Puente FIRE)."
               />
-            </span>
+            </div>
             <div className="mt-2.5 grid grid-cols-2 gap-2">
               <button
                 type="button"
                 onClick={() => update({ genero: 'hombre' })}
-                className={`border-2 border-black py-2 text-xs font-mono font-bold transition-all ${
+                className={`h-9 flex items-center justify-center border-2 border-black text-xs font-mono font-bold transition-all ${
                   input.genero === 'hombre'
                     ? 'bg-black text-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#fff]'
                     : 'bg-white text-neutral-700 hover:text-black dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300'
@@ -219,7 +218,7 @@ export function FireInputForm({
               <button
                 type="button"
                 onClick={() => update({ genero: 'mujer' })}
-                className={`border-2 border-black py-2 text-xs font-mono font-bold transition-all ${
+                className={`h-9 flex items-center justify-center border-2 border-black text-xs font-mono font-bold transition-all ${
                   input.genero === 'mujer'
                     ? 'bg-black text-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#fff]'
                     : 'bg-white text-neutral-700 hover:text-black dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300'
@@ -236,8 +235,8 @@ export function FireInputForm({
       <div className="border-2 border-black bg-white p-5 sm:p-6 shadow-[4px_4px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3 border-b-2 border-black/10 pb-2.5 dark:border-zinc-800">
           <div className="flex items-center space-x-2">
-            <span className="font-mono text-xs font-black uppercase tracking-wider text-black dark:text-zinc-200">
-              [ 02 // INGRESOS & PREVISIÓN CHILE ]
+            <span className="font-mono text-xs font-bold uppercase tracking-wider text-black dark:text-zinc-200">
+              02 / Ingresos y Previsión (Chile)
             </span>
             <InfoTooltip
               title="Cálculo Previsional y Tributario Chile"
@@ -247,12 +246,12 @@ export function FireInputForm({
 
           {/* Selector de modo: Líquido o Bruto */}
           <div className="flex items-center space-x-2 text-xs font-mono">
-            <span className="text-neutral-500 font-bold uppercase text-[11px]">Ingreso desde:</span>
+            <span className="text-neutral-500 font-semibold text-[11px]">Ingreso desde:</span>
             <div className="flex items-center border-2 border-black bg-white p-0.5 shadow-[2px_2px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-950 dark:shadow-[2px_2px_0px_0px_#fff]">
               <button
                 type="button"
                 onClick={() => handleModeSwitch('liquido')}
-                className={`px-2 py-0.5 font-bold transition-all ${
+                className={`px-2.5 py-0.5 font-bold transition-all ${
                   inputSalaryMode === 'liquido'
                     ? 'bg-black text-white dark:bg-white dark:text-black'
                     : 'text-neutral-600 hover:text-black dark:text-neutral-400 dark:hover:text-white'
@@ -263,7 +262,7 @@ export function FireInputForm({
               <button
                 type="button"
                 onClick={() => handleModeSwitch('bruto')}
-                className={`px-2 py-0.5 font-bold transition-all ${
+                className={`px-2.5 py-0.5 font-bold transition-all ${
                   inputSalaryMode === 'bruto'
                     ? 'bg-black text-white dark:bg-white dark:text-black'
                     : 'text-neutral-600 hover:text-black dark:text-neutral-400 dark:hover:text-white'
@@ -275,25 +274,25 @@ export function FireInputForm({
           </div>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-5">
           {/* Fila 1: Sueldo Principal y Previsión de Salud */}
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
             {/* Input Salario según modo */}
             {inputSalaryMode === 'liquido' ? (
               <div>
-                <div className="flex items-center justify-between text-xs font-mono font-bold uppercase text-black dark:text-white">
-                  <span className="inline-flex items-center space-x-1.5">
-                    <span>Sueldo Líquido Mensual:</span>
+                <div className="h-6 flex items-center justify-between text-xs font-mono font-bold text-neutral-900 dark:text-neutral-100">
+                  <span className="inline-flex items-center space-x-1.5 truncate mr-2">
+                    <span>Sueldo líquido mensual:</span>
                     <InfoTooltip
                       title="Sueldo Líquido"
                       content="Dinero exacto que recibes en tu cuenta corriente tras descuentos legales (AFP, salud, AFC e impuesto único)."
                     />
                   </span>
-                  <span className="border-2 border-black bg-emerald-100 px-2 py-0.5 text-emerald-950 font-black shadow-[1.5px_1.5px_0px_0px_#000] dark:border-zinc-200 dark:bg-emerald-900 dark:text-emerald-100">
+                  <span className="border-2 border-black bg-emerald-100 px-2 py-0.5 text-emerald-950 font-black shadow-[1.5px_1.5px_0px_0px_#000] dark:border-zinc-200 dark:bg-emerald-900 dark:text-emerald-100 whitespace-nowrap shrink-0">
                     ≈ {toUf(input.sueldoLiquidoMensual)}
                   </span>
                 </div>
-                <div className="mt-2 flex items-center border-2 border-black bg-white px-3 py-2 text-sm font-mono font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-950 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]">
+                <div className="mt-2 h-10 flex items-center border-2 border-black bg-white px-3 text-sm font-mono font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-950 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]">
                   <span className="mr-1 text-neutral-500">$</span>
                   <input
                     type="text"
@@ -315,19 +314,19 @@ export function FireInputForm({
               </div>
             ) : (
               <div>
-                <div className="flex items-center justify-between text-xs font-mono font-bold uppercase text-black dark:text-white">
-                  <span className="inline-flex items-center space-x-1.5">
-                    <span>Sueldo Bruto Contrato:</span>
+                <div className="h-6 flex items-center justify-between text-xs font-mono font-bold text-neutral-900 dark:text-neutral-100">
+                  <span className="inline-flex items-center space-x-1.5 truncate mr-2">
+                    <span>Sueldo bruto pactado:</span>
                     <InfoTooltip
                       title="Sueldo Bruto Pactado"
                       content="Monto pactado en tu contrato de trabajo antes de deducciones de seguridad social e impuestos."
                     />
                   </span>
-                  <span className="border-2 border-black bg-blue-100 px-2 py-0.5 text-blue-950 font-black shadow-[1.5px_1.5px_0px_0px_#000] dark:border-zinc-200 dark:bg-blue-900 dark:text-blue-100">
+                  <span className="border-2 border-black bg-blue-100 px-2 py-0.5 text-blue-950 font-black shadow-[1.5px_1.5px_0px_0px_#000] dark:border-zinc-200 dark:bg-blue-900 dark:text-blue-100 whitespace-nowrap shrink-0">
                     ≈ {toUf(enteredBruto)}
                   </span>
                 </div>
-                <div className="mt-2 flex items-center border-2 border-black bg-white px-3 py-2 text-sm font-mono font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-950 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]">
+                <div className="mt-2 h-10 flex items-center border-2 border-black bg-white px-3 text-sm font-mono font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-950 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]">
                   <span className="mr-1 text-neutral-500">$</span>
                   <input
                     type="text"
@@ -351,15 +350,15 @@ export function FireInputForm({
 
             {/* Previsión de Salud: Fonasa vs Isapre */}
             <div>
-              <div className="flex items-center justify-between text-xs font-mono font-bold uppercase text-black dark:text-white">
+              <div className="h-6 flex items-center justify-between text-xs font-mono font-bold text-neutral-900 dark:text-neutral-100">
                 <span className="inline-flex items-center space-x-1.5">
-                  <span>Previsión de Salud:</span>
+                  <span>Previsión de salud:</span>
                   <InfoTooltip
                     title="Previsión de Salud en Chile"
                     content="Fonasa descuenta el 7% legal de tu sueldo (tope 84.3 UF). En Isapre, si el plan cuesta más del 7%, pagas una cotización adicional con tu bolsillo."
                   />
                 </span>
-                <span className="text-[11px] font-mono text-neutral-500">
+                <span className="text-[11px] font-mono text-neutral-500 whitespace-nowrap shrink-0">
                   Legal: 7% (tope 84.3 UF)
                 </span>
               </div>
@@ -368,7 +367,7 @@ export function FireInputForm({
                 <button
                   type="button"
                   onClick={() => handleHealthSystemChange('fonasa')}
-                  className={`border-2 border-black py-2 text-xs font-mono font-bold transition-all ${
+                  className={`h-10 flex items-center justify-center border-2 border-black text-xs font-mono font-bold transition-all ${
                     healthSystem === 'fonasa'
                       ? 'bg-black text-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#fff]'
                       : 'bg-white text-neutral-700 hover:text-black dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300'
@@ -380,7 +379,7 @@ export function FireInputForm({
                 <button
                   type="button"
                   onClick={() => handleHealthSystemChange('isapre')}
-                  className={`border-2 border-black py-2 text-xs font-mono font-bold transition-all flex items-center justify-center space-x-1 ${
+                  className={`h-10 flex items-center justify-center space-x-1.5 border-2 border-black text-xs font-mono font-bold transition-all ${
                     healthSystem === 'isapre'
                       ? 'bg-black text-white shadow-[2px_2px_0px_0px_#000] dark:border-white dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#fff]'
                       : 'bg-white text-neutral-700 hover:text-black dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300'
@@ -395,8 +394,8 @@ export function FireInputForm({
               {healthSystem === 'isapre' && (
                 <div className="mt-3 border-2 border-black bg-neutral-50 p-3 text-xs font-mono dark:border-zinc-200 dark:bg-zinc-950 shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#fff] space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="font-bold uppercase text-[11px] text-neutral-700 dark:text-neutral-300">
-                      Costo Plan Isapre:
+                    <span className="font-bold text-[11px] text-neutral-700 dark:text-neutral-300">
+                      Costo plan Isapre:
                     </span>
                     <div className="flex items-center space-x-1 border border-black bg-white p-0.5 text-[10px] dark:border-zinc-700 dark:bg-zinc-900">
                       <button
@@ -438,7 +437,7 @@ export function FireInputForm({
                         />
                         <span className="text-neutral-400">UF</span>
                       </div>
-                      <span className="text-[11px] font-bold text-neutral-600 dark:text-neutral-300 whitespace-nowrap">
+                      <span className="text-[11px] font-bold text-neutral-600 dark:text-neutral-300 whitespace-nowrap shrink-0">
                         ≈ ${Math.round(isaprePlanUf * dynamicParams.uf).toLocaleString('es-CL')}
                       </span>
                     </div>
@@ -453,7 +452,7 @@ export function FireInputForm({
                           className="w-full bg-transparent tabular-nums focus:outline-none"
                         />
                       </div>
-                      <span className="text-[11px] font-bold text-neutral-600 dark:text-neutral-300 whitespace-nowrap">
+                      <span className="text-[11px] font-bold text-neutral-600 dark:text-neutral-300 whitespace-nowrap shrink-0">
                         ≈ {toUf(isaprePlanClp)}
                       </span>
                     </div>
@@ -464,11 +463,11 @@ export function FireInputForm({
                       7% legal: ${Math.round(breakdown.salud.saludLegal7Pct).toLocaleString('es-CL')}
                     </span>
                     {breakdown.salud.cotizacionAdicionalSalud > 0 ? (
-                      <span className="font-bold text-amber-700 dark:text-amber-400">
+                      <span className="font-bold text-amber-700 dark:text-amber-400 whitespace-nowrap">
                         Adicional: +${Math.round(breakdown.salud.cotizacionAdicionalSalud).toLocaleString('es-CL')}
                       </span>
                     ) : (
-                      <span className="font-bold text-emerald-700 dark:text-emerald-400">
+                      <span className="font-bold text-emerald-700 dark:text-emerald-400 whitespace-nowrap">
                         Excedente: ${Math.round(breakdown.salud.excedentesIsapre).toLocaleString('es-CL')}/mes
                       </span>
                     )}
@@ -478,98 +477,102 @@ export function FireInputForm({
             </div>
           </div>
 
-          {/* Fila 2: APV y AFC (Cesantía) */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 pt-2">
-            {/* Monto APV */}
-            <div>
-              <div className="flex items-center justify-between text-xs font-mono font-bold uppercase text-black dark:text-white">
-                <span className="inline-flex items-center space-x-1.5">
-                  <span>Ahorro Voluntario APV</span>
-                  <InfoTooltip
-                    title="Aporte Voluntario APV"
-                    content="Ahorro previsional voluntario para adelantar la jubilación o pagar menos impuestos en Chile."
+          {/* Fila 2: APV y AFC (Cesantía) - 100% ALINEADOS HORIZONTAL Y VERTICALMENTE */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 pt-1">
+            {/* Columna 1: Monto APV */}
+            <div className="flex flex-col justify-between">
+              <div>
+                <div className="h-6 flex items-center justify-between text-xs font-mono font-bold text-neutral-900 dark:text-neutral-100">
+                  <span className="inline-flex items-center space-x-1.5 truncate mr-1">
+                    <span>Ahorro voluntario (APV)</span>
+                    <InfoTooltip
+                      title="Aporte Voluntario APV"
+                      content="Ahorro previsional voluntario para adelantar la jubilación o pagar menos impuestos en Chile."
+                    />
+                  </span>
+                  <span className="text-[11px] font-bold text-neutral-500 whitespace-nowrap shrink-0">
+                    {input.aporteApvMensual > 0 ? toUf(input.aporteApvMensual) : 'Opcional'}
+                  </span>
+                </div>
+                <div className="mt-2 h-10 flex items-center border-2 border-black bg-white px-3 text-xs font-mono font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-950 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]">
+                  <span className="mr-1 text-neutral-400">$</span>
+                  <input
+                    type="text"
+                    value={formatThousands(input.aporteApvMensual)}
+                    onChange={(e) => update({ aporteApvMensual: parseThousands(e.target.value) })}
+                    className="w-full bg-transparent tabular-nums focus:outline-none"
                   />
-                </span>
-                <span className="text-[10px] text-neutral-500">
-                  {input.aporteApvMensual > 0 ? toUf(input.aporteApvMensual) : 'Opcional'}
-                </span>
+                </div>
               </div>
-              <div className="mt-2 flex items-center border-2 border-black bg-white px-3 py-1.5 text-xs font-mono font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-950 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]">
-                <span className="mr-1 text-neutral-400">$</span>
+              <div className="mt-2.5 flex items-center h-5">
                 <input
-                  type="text"
-                  value={formatThousands(input.aporteApvMensual)}
-                  onChange={(e) => update({ aporteApvMensual: parseThousands(e.target.value) })}
-                  className="w-full bg-transparent tabular-nums focus:outline-none"
+                  type="range"
+                  min={0}
+                  max={1000000}
+                  step={20000}
+                  value={input.aporteApvMensual}
+                  onChange={(e) => update({ aporteApvMensual: Number(e.target.value) })}
+                  className="w-full cursor-pointer"
                 />
               </div>
-              <input
-                type="range"
-                min={0}
-                max={1000000}
-                step={20000}
-                value={input.aporteApvMensual}
-                onChange={(e) => update({ aporteApvMensual: Number(e.target.value) })}
-                className="mt-2.5 w-full cursor-pointer"
-              />
             </div>
 
-            {/* Régimen APV */}
-            <div>
-              <div className="flex items-center justify-between text-xs font-mono font-bold uppercase text-black dark:text-white">
-                <span className="inline-flex items-center space-x-1.5">
-                  <span>Régimen Tributario APV</span>
+            {/* Columna 2: Régimen APV */}
+            <div className="flex flex-col justify-between">
+              <div>
+                <div className="h-6 flex items-center space-x-1.5 text-xs font-mono font-bold text-neutral-900 dark:text-neutral-100">
+                  <span>Régimen tributario APV</span>
                   <InfoTooltip
                     title="Régimen APV A vs B"
                     content="Régimen A: Bono fiscal 15% (tope 6 UTM/año). Régimen B: Rebaja base de impuesto (tope 50 UF/mes)."
                   />
-                </span>
+                </div>
+                <select
+                  value={apvRegimen}
+                  onChange={(e) => setApvRegimen(e.target.value as 'A' | 'B' | 'ninguno')}
+                  className="mt-2 h-10 w-full border-2 border-black bg-white px-2.5 text-xs font-mono font-semibold text-black shadow-[2px_2px_0px_0px_#000] focus:outline-none dark:border-zinc-200 dark:bg-zinc-950 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff] cursor-pointer"
+                >
+                  <option value="ninguno">Sin beneficio tributario (O sin APV)</option>
+                  <option value="A">Régimen A (+15% Bono Fiscal)</option>
+                  <option value="B">Régimen B (Rebaja Impuesto SII)</option>
+                </select>
               </div>
-              <select
-                value={apvRegimen}
-                onChange={(e) => setApvRegimen(e.target.value as 'A' | 'B' | 'ninguno')}
-                className="mt-2 w-full border-2 border-black bg-white px-2.5 py-1.5 text-xs font-mono font-bold text-black shadow-[2px_2px_0px_0px_#000] focus:outline-none dark:border-zinc-200 dark:bg-zinc-950 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]"
-              >
-                <option value="ninguno">Sin beneficio tributario (O sin APV)</option>
-                <option value="A">Régimen A (+15% Bono Fiscal)</option>
-                <option value="B">Régimen B (Rebaja Impuesto SII)</option>
-              </select>
-              <span className="mt-1.5 block text-[10px] font-mono text-neutral-500">
+              <p className="mt-2.5 text-[11px] font-mono text-neutral-500 dark:text-neutral-400 leading-tight truncate">
                 {apvRegimen === 'A'
                   ? 'Bono fiscal hasta 6 UTM/año (~$435.000).'
                   : apvRegimen === 'B'
-                  ? 'Rebaja base imponible (tope 50 UF).'
+                  ? 'Rebaja base imponible (tope 50 UF/mes).'
                   : 'Sin beneficio tributario directo.'}
-              </span>
+              </p>
             </div>
 
-            {/* Seguro Cesantía (AFC) */}
-            <div>
-              <div className="flex items-center justify-between text-xs font-mono font-bold uppercase text-black dark:text-white">
-                <span className="inline-flex items-center space-x-1.5">
-                  <span>Seguro Cesantía (AFC)</span>
+            {/* Columna 3: Seguro Cesantía (AFC) */}
+            <div className="flex flex-col justify-between">
+              <div>
+                <div className="h-6 flex items-center space-x-1.5 text-xs font-mono font-bold text-neutral-900 dark:text-neutral-100">
+                  <span>Seguro de cesantía (AFC)</span>
                   <InfoTooltip
                     title="Seguro de Cesantía"
                     content="Contrato indefinido: 0.6% trabajador (tope 126.6 UF). Plazo fijo / independiente: 0%."
                   />
-                </span>
+                </div>
+                <label className="mt-2 h-10 flex items-center justify-between border-2 border-black bg-white px-3 text-xs font-mono font-semibold shadow-[2px_2px_0px_0px_#000] cursor-pointer dark:border-zinc-200 dark:bg-zinc-950 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]">
+                  <span className="truncate mr-2">{tieneAfc ? 'Contrato Indefinido (0.6%)' : 'Sin AFC (0%)'}</span>
+                  <input
+                    type="checkbox"
+                    checked={tieneAfc}
+                    onChange={(e) => setTieneAfc(e.target.checked)}
+                    className="h-4 w-4 shrink-0 border-2 border-black accent-black cursor-pointer"
+                  />
+                </label>
               </div>
-              <label className="mt-2 flex h-[34px] items-center justify-between border-2 border-black bg-white px-3 text-xs font-mono font-bold shadow-[2px_2px_0px_0px_#000] cursor-pointer dark:border-zinc-200 dark:bg-zinc-950 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]">
-                <span>{tieneAfc ? 'Contrato Indefinido (0.6%)' : 'Sin AFC (0%)'}</span>
-                <input
-                  type="checkbox"
-                  checked={tieneAfc}
-                  onChange={(e) => setTieneAfc(e.target.checked)}
-                  className="h-4 w-4 border-2 border-black accent-black cursor-pointer"
-                />
-              </label>
-              <span className="mt-1.5 block text-[10px] font-mono text-neutral-500">
-                Tope 126.6 UF ({formatMoney(dynamicParams.topeImponibleAfcUF * dynamicParams.uf, currencyMode, ufRate)})
-              </span>
+              <p className="mt-2.5 text-[11px] font-mono text-neutral-500 dark:text-neutral-400 leading-tight truncate">
+                Tope imponible 126.6 UF ({formatMoney(dynamicParams.topeImponibleAfcUF * dynamicParams.uf, currencyMode, ufRate)})
+              </p>
             </div>
           </div>
 
-          {/* Desglose Unificado de Sueldo / Liquidación (Ledger Brutalista) */}
+          {/* Desglose Unificado de Sueldo / Liquidación */}
           <div className="border-2 border-black bg-neutral-50 p-4 font-mono shadow-[3px_3px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-950 dark:shadow-[3px_3px_0px_0px_#fff]">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center space-x-2.5">
@@ -577,17 +580,17 @@ export function FireInputForm({
                   <ShieldCheck className="h-5 w-5 stroke-[2.5]" />
                 </div>
                 <div>
-                  <div className="text-xs font-black uppercase text-black dark:text-white">
-                    Sueldo Bruto Calculado:{' '}
+                  <div className="text-xs font-bold text-black dark:text-white">
+                    Sueldo bruto calculado:{' '}
                     <span className="text-blue-700 dark:text-blue-400">
                       {formatMoney(breakdown.sueldoBruto, currencyMode, ufRate)}
                     </span>{' '}
-                    <span className="text-neutral-500 font-normal">
+                    <span className="text-neutral-500 font-normal whitespace-nowrap">
                       (≈ {toUf(breakdown.sueldoBruto)})
                     </span>
                   </div>
                   <div className="text-[11px] text-neutral-600 dark:text-neutral-400">
-                    Líquido: <strong>{formatMoney(breakdown.sueldoLiquido, currencyMode, ufRate)}</strong> · Fondo AFP: <strong>+{formatMoney(breakdown.cotizacionAfp10, currencyMode, ufRate)}/mes</strong>
+                    Líquido: <strong>{formatMoney(breakdown.sueldoLiquido, currencyMode, ufRate)}</strong> · Aporte fondo AFP: <strong>+{formatMoney(breakdown.cotizacionAfp10, currencyMode, ufRate)}/mes</strong>
                   </div>
                 </div>
               </div>
@@ -597,7 +600,7 @@ export function FireInputForm({
                 onClick={() => setShowDetailedBreakdown(!showDetailedBreakdown)}
                 className="flex items-center space-x-1 border-2 border-black bg-white px-2.5 py-1 text-xs font-bold text-black shadow-[1.5px_1.5px_0px_0px_#000] hover:bg-neutral-100 dark:border-zinc-200 dark:bg-zinc-900 dark:text-white"
               >
-                <span>{showDetailedBreakdown ? 'Ocultar Desglose' : 'Ver Desglose'}</span>
+                <span>{showDetailedBreakdown ? 'Ocultar desglose' : 'Ver desglose'}</span>
                 {showDetailedBreakdown ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
               </button>
             </div>
@@ -608,7 +611,7 @@ export function FireInputForm({
                   {/* AFP 10% */}
                   <div className="border border-black bg-white p-2 dark:border-zinc-700 dark:bg-zinc-900">
                     <span className="text-neutral-500 block text-[10px]">AFP (10% fondo)</span>
-                    <span className="font-bold text-blue-700 dark:text-blue-400">
+                    <span className="font-bold text-blue-700 dark:text-blue-400 whitespace-nowrap">
                       +{formatMoney(breakdown.cotizacionAfp10, currencyMode, ufRate)}
                     </span>
                   </div>
@@ -616,7 +619,7 @@ export function FireInputForm({
                   {/* Comisión AFP */}
                   <div className="border border-black bg-white p-2 dark:border-zinc-700 dark:bg-zinc-900">
                     <span className="text-neutral-500 block text-[10px]">Comisión AFP</span>
-                    <span className="font-bold text-neutral-700 dark:text-neutral-300">
+                    <span className="font-bold text-neutral-700 dark:text-neutral-300 whitespace-nowrap">
                       -{formatMoney(breakdown.comisionAfp, currencyMode, ufRate)}
                     </span>
                   </div>
@@ -624,7 +627,7 @@ export function FireInputForm({
                   {/* Salud 7% */}
                   <div className="border border-black bg-white p-2 dark:border-zinc-700 dark:bg-zinc-900">
                     <span className="text-neutral-500 block text-[10px]">Salud (7% Legal)</span>
-                    <span className="font-bold text-neutral-700 dark:text-neutral-300">
+                    <span className="font-bold text-neutral-700 dark:text-neutral-300 whitespace-nowrap">
                       -{formatMoney(breakdown.salud.saludLegal7Pct, currencyMode, ufRate)}
                     </span>
                   </div>
@@ -632,7 +635,7 @@ export function FireInputForm({
                   {/* Adicional Isapre */}
                   <div className="border border-black bg-white p-2 dark:border-zinc-700 dark:bg-zinc-900">
                     <span className="text-neutral-500 block text-[10px]">Adicional Isapre</span>
-                    <span className={`font-bold ${breakdown.salud.cotizacionAdicionalSalud > 0 ? 'text-amber-700 dark:text-amber-400' : 'text-neutral-400'}`}>
+                    <span className={`font-bold whitespace-nowrap ${breakdown.salud.cotizacionAdicionalSalud > 0 ? 'text-amber-700 dark:text-amber-400' : 'text-neutral-400'}`}>
                       {breakdown.salud.cotizacionAdicionalSalud > 0 ? `-${formatMoney(breakdown.salud.cotizacionAdicionalSalud, currencyMode, ufRate)}` : '$0'}
                     </span>
                   </div>
@@ -640,7 +643,7 @@ export function FireInputForm({
                   {/* Cesantía */}
                   <div className="border border-black bg-white p-2 dark:border-zinc-700 dark:bg-zinc-900">
                     <span className="text-neutral-500 block text-[10px]">AFC Cesantía</span>
-                    <span className="font-bold text-neutral-700 dark:text-neutral-300">
+                    <span className="font-bold text-neutral-700 dark:text-neutral-300 whitespace-nowrap">
                       -{formatMoney(breakdown.seguroCesantia, currencyMode, ufRate)}
                     </span>
                   </div>
@@ -648,7 +651,7 @@ export function FireInputForm({
                   {/* Impuesto SII */}
                   <div className="border border-black bg-white p-2 dark:border-zinc-700 dark:bg-zinc-900">
                     <span className="text-neutral-500 block text-[10px]">Impuesto SII 2da</span>
-                    <span className="font-bold text-rose-600 dark:text-rose-400">
+                    <span className="font-bold text-rose-600 dark:text-rose-400 whitespace-nowrap">
                       -{formatMoney(breakdown.impuestoSegundaCategoria, currencyMode, ufRate)}
                     </span>
                   </div>
@@ -658,9 +661,9 @@ export function FireInputForm({
                   <div className="mt-2.5 flex items-center justify-between border-2 border-black bg-emerald-100 px-3 py-1.5 text-xs font-bold text-emerald-950 dark:bg-emerald-950 dark:text-emerald-100">
                     <span className="inline-flex items-center space-x-1">
                       <Sparkles className="h-4 w-4 text-emerald-700" />
-                      <span>BENEFICIO FISCAL APV (RÉGIMEN {breakdown.apvRegimen}):</span>
+                      <span>Beneficio fiscal APV (Régimen {breakdown.apvRegimen}):</span>
                     </span>
-                    <span className="font-black">
+                    <span className="font-black whitespace-nowrap">
                       +{formatMoney(breakdown.apvBeneficioFiscalEstimado, currencyMode, ufRate)}/mes
                     </span>
                   </div>
@@ -671,16 +674,16 @@ export function FireInputForm({
 
           {/* Crecimiento Salarial Real Anual */}
           <div className="pt-2 border-t-2 border-black/10 dark:border-zinc-800">
-            <div className="flex items-center justify-between text-xs font-mono font-bold uppercase text-black dark:text-white">
+            <div className="h-6 flex items-center justify-between text-xs font-mono font-bold text-neutral-900 dark:text-neutral-100">
               <span className="inline-flex items-center space-x-1.5">
-                <span>Crecimiento Salarial Real Anual:</span>
+                <span>Crecimiento salarial real anual:</span>
                 <InfoTooltip
                   title="Aumento Real Anual de Sueldo"
                   content="Porcentaje anual que estimas que tu sueldo aumentará por sobre la inflación debido a experiencia o ascensos."
                 />
               </span>
-              <span className="border-2 border-black bg-[#facc15] px-2 py-0.5 text-black font-black shadow-[1.5px_1.5px_0px_0px_#000] dark:border-zinc-200">
-                +{input.crecimientoIngresoRealPct}% ANUAL
+              <span className="border-2 border-black bg-[#facc15] px-2 py-0.5 text-black font-black text-xs shadow-[1.5px_1.5px_0px_0px_#000] dark:border-zinc-200 whitespace-nowrap shrink-0">
+                +{input.crecimientoIngresoRealPct}% anual
               </span>
             </div>
 
@@ -695,7 +698,7 @@ export function FireInputForm({
             />
 
             <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
-              <span className="text-neutral-500">Aumentos reales proyectados sobre IPC</span>
+              <span className="text-neutral-500">Aumentos proyectados por sobre la inflación</span>
               <div className="flex items-center space-x-1">
                 {[0, 2, 3.5, 5].map((rate) => (
                   <button
@@ -720,27 +723,27 @@ export function FireInputForm({
       {/* 3. Gastos Mensuales y en Retiro */}
       <div className="border-2 border-black bg-white p-5 sm:p-6 shadow-[4px_4px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
         <div className="mb-4 flex items-center justify-between border-b-2 border-black/10 pb-2.5 dark:border-zinc-800">
-          <span className="font-mono text-xs font-black uppercase tracking-wider text-black dark:text-zinc-200">
-            [ 03 // ESTILO DE VIDA & GASTOS ]
+          <span className="font-mono text-xs font-bold uppercase tracking-wider text-black dark:text-zinc-200">
+            03 / Estilo de Vida y Gastos
           </span>
         </div>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           {/* Gasto Mensual Actual */}
           <div>
-            <div className="flex items-center justify-between text-xs font-mono font-bold uppercase text-black dark:text-white">
-              <span className="inline-flex items-center space-x-1.5">
-                <span>Gasto Mensual Actual:</span>
+            <div className="h-6 flex items-center justify-between text-xs font-mono font-bold text-neutral-900 dark:text-neutral-100">
+              <span className="inline-flex items-center space-x-1.5 truncate mr-2">
+                <span>Gasto mensual actual:</span>
                 <InfoTooltip
                   title="Gasto Mensual del Hogar"
                   content="Costo de vida mensual actual: vivienda, comida, servicios, transporte y compras. La diferencia con tu sueldo es tu ahorro."
                 />
               </span>
-              <span className="text-[11px] font-bold text-neutral-500">
+              <span className="text-[11px] font-bold text-neutral-500 whitespace-nowrap shrink-0">
                 ≈ {toUf(input.gastoMensualActual)}
               </span>
             </div>
-            <div className="mt-2 flex items-center border-2 border-black bg-white px-3 py-2 text-sm font-mono font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-950 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]">
+            <div className="mt-2 h-10 flex items-center border-2 border-black bg-white px-3 text-sm font-mono font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-950 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]">
               <span className="mr-1 text-neutral-500">$</span>
               <input
                 type="text"
@@ -762,19 +765,19 @@ export function FireInputForm({
 
           {/* Gasto Deseado en Retiro */}
           <div>
-            <div className="flex items-center justify-between text-xs font-mono font-bold uppercase text-black dark:text-white">
-              <span className="inline-flex items-center space-x-1.5">
-                <span>Gasto Deseado en Retiro:</span>
+            <div className="h-6 flex items-center justify-between text-xs font-mono font-bold text-neutral-900 dark:text-neutral-100">
+              <span className="inline-flex items-center space-x-1.5 truncate mr-2">
+                <span>Gasto deseado en retiro:</span>
                 <InfoTooltip
                   title="Presupuesto Mensual de Retiro"
                   content="Presupuesto para vivir sin trabajar. Si la vivienda está pagada, suele ser entre 75% y 85% del gasto actual."
                 />
               </span>
-              <span className="text-[11px] font-bold text-neutral-500">
+              <span className="text-[11px] font-bold text-neutral-500 whitespace-nowrap shrink-0">
                 ≈ {toUf(input.gastoMensualRetiro)}
               </span>
             </div>
-            <div className="mt-2 flex items-center border-2 border-black bg-white px-3 py-2 text-sm font-mono font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-950 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]">
+            <div className="mt-2 h-10 flex items-center border-2 border-black bg-white px-3 text-sm font-mono font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-950 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]">
               <span className="mr-1 text-neutral-500">$</span>
               <input
                 type="text"
@@ -817,27 +820,27 @@ export function FireInputForm({
       {/* 4. Patrimonio Actual Acumulado */}
       <div className="border-2 border-black bg-white p-5 sm:p-6 shadow-[4px_4px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
         <div className="mb-4 flex items-center justify-between border-b-2 border-black/10 pb-2.5 dark:border-zinc-800">
-          <span className="font-mono text-xs font-black uppercase tracking-wider text-black dark:text-zinc-200">
-            [ 04 // PATRIMONIO ACTUAL ACUMULADO ]
+          <span className="font-mono text-xs font-bold uppercase tracking-wider text-black dark:text-zinc-200">
+            04 / Patrimonio Actual Acumulado
           </span>
         </div>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           {/* Portafolio Libre */}
           <div>
-            <div className="flex items-center justify-between text-xs font-mono font-bold uppercase text-black dark:text-white">
-              <span className="inline-flex items-center space-x-1.5">
-                <span>Portafolio Libre (ETFs, Acciones, C2):</span>
+            <div className="h-6 flex items-center justify-between text-xs font-mono font-bold text-neutral-900 dark:text-neutral-100">
+              <span className="inline-flex items-center space-x-1.5 truncate mr-2">
+                <span>Portafolio libre (ETFs, C2):</span>
                 <InfoTooltip
                   title="Portafolio Libre de Inversión"
                   content="Dinero sin restricciones de retiro por edad: Cuenta 2, ETFs globales (VWRA, CSPX), acciones. Financia los años antes de la pensión legal."
                 />
               </span>
-              <span className="border-2 border-black bg-emerald-100 px-2 py-0.5 text-emerald-950 font-black shadow-[1.5px_1.5px_0px_0px_#000] dark:border-zinc-200 dark:bg-emerald-900 dark:text-emerald-100">
+              <span className="border-2 border-black bg-emerald-100 px-2 py-0.5 text-emerald-950 font-black shadow-[1.5px_1.5px_0px_0px_#000] dark:border-zinc-200 dark:bg-emerald-900 dark:text-emerald-100 whitespace-nowrap shrink-0">
                 ≈ {toUf(input.patrimonioLiquidoInicial)}
               </span>
             </div>
-            <div className="mt-2 flex items-center border-2 border-black bg-white px-3 py-2 text-sm font-mono font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-950 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]">
+            <div className="mt-2 h-10 flex items-center border-2 border-black bg-white px-3 text-sm font-mono font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-950 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]">
               <span className="mr-1 text-neutral-500">$</span>
               <input
                 type="text"
@@ -859,19 +862,19 @@ export function FireInputForm({
 
           {/* Saldo AFP */}
           <div>
-            <div className="flex items-center justify-between text-xs font-mono font-bold uppercase text-black dark:text-white">
-              <span className="inline-flex items-center space-x-1.5">
-                <span>Saldo Cuenta AFP Obligatoria:</span>
+            <div className="h-6 flex items-center justify-between text-xs font-mono font-bold text-neutral-900 dark:text-neutral-100">
+              <span className="inline-flex items-center space-x-1.5 truncate mr-2">
+                <span>Saldo cuenta AFP obligatoria:</span>
                 <InfoTooltip
                   title="Fondo Acumulado en AFP Obligatoria"
                   content="Ahorro en tu cuenta individual AFP. Se desbloquea a los 60/65 años y garantiza tu pensión legal vitalicia."
                 />
               </span>
-              <span className="border-2 border-black bg-blue-100 px-2 py-0.5 text-blue-950 font-black shadow-[1.5px_1.5px_0px_0px_#000] dark:border-zinc-200 dark:bg-blue-900 dark:text-blue-100">
+              <span className="border-2 border-black bg-blue-100 px-2 py-0.5 text-blue-950 font-black shadow-[1.5px_1.5px_0px_0px_#000] dark:border-zinc-200 dark:bg-blue-900 dark:text-blue-100 whitespace-nowrap shrink-0">
                 ≈ {toUf(input.saldoAfpInicial)}
               </span>
             </div>
-            <div className="mt-2 flex items-center border-2 border-black bg-white px-3 py-2 text-sm font-mono font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-950 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]">
+            <div className="mt-2 h-10 flex items-center border-2 border-black bg-white px-3 text-sm font-mono font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-950 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]">
               <span className="mr-1 text-neutral-500">$</span>
               <input
                 type="text"
@@ -896,22 +899,22 @@ export function FireInputForm({
       {/* 5. Supuestos de Mercado & Pensión */}
       <div className="border-2 border-black bg-white p-5 sm:p-6 shadow-[4px_4px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
         <div className="mb-4 flex items-center justify-between border-b-2 border-black/10 pb-2.5 dark:border-zinc-800">
-          <span className="font-mono text-xs font-black uppercase tracking-wider text-black dark:text-zinc-200">
-            [ 05 // RENTABILIDADES REALES & REGLA DEL 4% ]
+          <span className="font-mono text-xs font-bold uppercase tracking-wider text-black dark:text-zinc-200">
+            05 / Rentabilidades Reales y Regla del 4%
           </span>
         </div>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-4">
           <div>
-            <div className="flex items-center justify-between text-xs font-mono font-bold uppercase text-black dark:text-white">
-              <span className="inline-flex items-center space-x-1.5">
-                <span>Portafolio Libre:</span>
+            <div className="h-6 flex items-center justify-between text-xs font-mono font-bold text-neutral-900 dark:text-neutral-100">
+              <span className="inline-flex items-center space-x-1.5 truncate mr-1">
+                <span>Portafolio libre:</span>
                 <InfoTooltip
                   title="Rentabilidad Real de Inversiones Libres"
                   content="Retorno neto sobre inflación (IPC). Los fondos globales promedian históricamente 6.5% a 7.5% real."
                 />
               </span>
-              <span className="border border-black bg-emerald-100 px-1.5 py-0.2 text-emerald-950 dark:border-zinc-200 dark:bg-emerald-900 dark:text-emerald-100">
+              <span className="border border-black bg-emerald-100 px-1.5 py-0.2 text-emerald-950 dark:border-zinc-200 dark:bg-emerald-900 dark:text-emerald-100 whitespace-nowrap shrink-0">
                 {input.rentabilidadPortafolioRealPct}%
               </span>
             </div>
@@ -928,15 +931,15 @@ export function FireInputForm({
           </div>
 
           <div>
-            <div className="flex items-center justify-between text-xs font-mono font-bold uppercase text-black dark:text-white">
-              <span className="inline-flex items-center space-x-1.5">
+            <div className="h-6 flex items-center justify-between text-xs font-mono font-bold text-neutral-900 dark:text-neutral-100">
+              <span className="inline-flex items-center space-x-1.5 truncate mr-1">
                 <span>Fondo AFP:</span>
                 <InfoTooltip
                   title="Rentabilidad Real AFP"
                   content="Retorno anual esperado del fondo obligatorio. Promedios históricos: Fondo A (~5.8%), C (~4.4%), E (~2.8%)."
                 />
               </span>
-              <span className="border border-black bg-blue-100 px-1.5 py-0.2 text-blue-950 dark:border-zinc-200 dark:bg-blue-900 dark:text-blue-100">
+              <span className="border border-black bg-blue-100 px-1.5 py-0.2 text-blue-950 dark:border-zinc-200 dark:bg-blue-900 dark:text-blue-100 whitespace-nowrap shrink-0">
                 {input.rentabilidadAfpRealPct}%
               </span>
             </div>
@@ -953,15 +956,15 @@ export function FireInputForm({
           </div>
 
           <div>
-            <div className="flex items-center justify-between text-xs font-mono font-bold uppercase text-black dark:text-white">
-              <span className="inline-flex items-center space-x-1.5">
+            <div className="h-6 flex items-center justify-between text-xs font-mono font-bold text-neutral-900 dark:text-neutral-100">
+              <span className="inline-flex items-center space-x-1.5 truncate mr-1">
                 <span>Retiro Seguro (SWR):</span>
                 <InfoTooltip
                   title="Tasa de Retiro Seguro (SWR)"
                   content="Porcentaje del portafolio que retiras cada año para que tu capital no se extinga (Estudio Trinity / Regla del 4%)."
                 />
               </span>
-              <span className="border border-black bg-amber-100 px-1.5 py-0.2 text-amber-950 dark:border-zinc-200 dark:bg-amber-900 dark:text-amber-100">
+              <span className="border border-black bg-amber-100 px-1.5 py-0.2 text-amber-950 dark:border-zinc-200 dark:bg-amber-900 dark:text-amber-100 whitespace-nowrap shrink-0">
                 {input.tasaRetiroSeguroPct}%
               </span>
             </div>
@@ -977,23 +980,26 @@ export function FireInputForm({
             <span className="text-[10px] font-mono text-neutral-500 block mt-1">Regla 4% Trinity Study</span>
           </div>
 
-          <div className="flex flex-col justify-center border-2 border-black bg-neutral-50 p-2.5 font-mono text-xs dark:border-zinc-200 dark:bg-zinc-950 shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#fff]">
-            <label className="flex items-center space-x-2 font-bold text-black dark:text-white cursor-pointer">
+          <div className="flex flex-col justify-between">
+            <div className="h-6 flex items-center text-xs font-mono font-bold text-neutral-900 dark:text-neutral-100">
+              <span>Pensión estatal</span>
+            </div>
+            <label className="h-10 flex items-center space-x-2 border-2 border-black bg-white px-3 font-mono text-xs font-semibold shadow-[2px_2px_0px_0px_#000] cursor-pointer dark:border-zinc-200 dark:bg-zinc-950 dark:text-white dark:shadow-[2px_2px_0px_0px_#fff]">
               <input
                 type="checkbox"
                 checked={input.incluirPgu}
                 onChange={(e) => update({ incluirPgu: e.target.checked })}
-                className="h-4 w-4 border-2 border-black accent-black cursor-pointer"
+                className="h-4 w-4 border-2 border-black accent-black cursor-pointer shrink-0"
               />
-              <span className="inline-flex items-center space-x-1">
-                <span>Pensión PGU (65 años)</span>
+              <span className="inline-flex items-center space-x-1 truncate">
+                <span>PGU (65 años)</span>
                 <InfoTooltip
                   title="Pensión Garantizada Universal (PGU)"
                   content="Aporte estatal solidario para mayores de 65 años (~$214.296/mes reajustable)."
                 />
               </span>
             </label>
-            <p className="mt-1 text-[10px] text-neutral-500 leading-tight">
+            <p className="mt-1 text-[10px] font-mono text-neutral-500 leading-tight truncate">
               Aporte estatal solidario (~$214.296/mes).
             </p>
           </div>

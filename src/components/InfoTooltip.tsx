@@ -33,7 +33,7 @@ export function InfoTooltip({
     }, 120);
   };
 
-  // Cierra al hacer clic afuera en móviles o presionar Escape
+  // Cierra al hacer clic afuera o presionar Escape
   useEffect(() => {
     if (!isOpen) return;
 
@@ -58,7 +58,6 @@ export function InfoTooltip({
     };
   }, [isOpen]);
 
-  // Posicionamiento dinámico del tooltip
   const getPositionClasses = () => {
     switch (side) {
       case 'bottom':
@@ -76,7 +75,7 @@ export function InfoTooltip({
   return (
     <span
       ref={containerRef}
-      className={`relative inline-flex items-center align-middle ${className}`}
+      className={`relative inline-flex items-center shrink-0 align-middle ${className}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -91,22 +90,22 @@ export function InfoTooltip({
         }}
         onFocus={() => setIsOpen(true)}
         onBlur={() => setIsOpen(false)}
-        className="group inline-flex h-4 w-4 items-center justify-center rounded-full text-neutral-400 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:text-neutral-500 dark:hover:text-blue-400"
+        className="group inline-flex h-4 w-4 shrink-0 items-center justify-center text-neutral-400 hover:text-black focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 border-0 outline-none select-none dark:text-neutral-400 dark:hover:text-white transition-colors"
       >
-        <Info className={`h-3.5 w-3.5 transition-transform duration-150 group-hover:scale-110 ${iconClassName}`} />
+        <Info className={`h-3.5 w-3.5 stroke-[2] transition-transform duration-100 group-hover:scale-110 ${iconClassName}`} />
       </button>
 
       {isOpen && (
         <span
           role="tooltip"
-          className={`pointer-events-auto absolute z-50 w-72 max-w-[85vw] rounded-xl border border-neutral-700/80 bg-[#1c1c1b] p-3 text-left text-[11.5px] leading-relaxed text-neutral-200 shadow-xl backdrop-blur-md dark:border-neutral-700 dark:bg-[#181817] ${getPositionClasses()} animate-in fade-in zoom-in-95 duration-150`}
+          className={`pointer-events-auto absolute z-50 w-72 max-w-[85vw] border-2 border-black bg-white p-3 text-left font-sans text-xs leading-relaxed text-black shadow-[3px_3px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-900 dark:text-zinc-100 dark:shadow-[3px_3px_0px_0px_#fff] ${getPositionClasses()} animate-in fade-in zoom-in-95 duration-100`}
         >
           {title && (
-            <span className="mb-1 block font-semibold text-white tracking-tight border-b border-neutral-700/60 pb-1">
+            <span className="mb-1.5 block font-bold text-black dark:text-white border-b border-black/15 pb-1 dark:border-zinc-700">
               {title}
             </span>
           )}
-          <span className="block font-normal text-neutral-300">
+          <span className="block font-normal text-neutral-700 dark:text-neutral-300">
             {content}
           </span>
         </span>

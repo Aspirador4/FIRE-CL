@@ -11,7 +11,6 @@ import {
   Printer,
   Sun,
   Moon,
-  Flame,
 } from 'lucide-react';
 import { InfoTooltip } from '@/components/InfoTooltip';
 
@@ -66,32 +65,32 @@ export function Header({
 
   return (
     <header className="sticky top-0 z-50 border-b-2 border-black bg-[#f7f6f0] dark:border-zinc-200 dark:bg-[#0d0e12] transition-colors">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-2.5 py-2 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-3 py-2.5 sm:px-6 lg:px-8">
         {/* Brand */}
-        <div className="flex items-center space-x-2 shrink-0">
+        <div className="flex items-center space-x-2.5 shrink-0">
           <Link
             href="/"
-            className="group flex items-center space-x-2 outline-none transition-transform active:translate-y-0.5"
+            className="group flex items-center space-x-2.5 outline-none transition-transform active:translate-y-0.5"
           >
-            <div className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center border-2 border-black bg-[#facc15] text-black shadow-[2px_2px_0px_0px_#000] transition-all group-hover:-translate-x-0.5 group-hover:-translate-y-0.5 group-hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:shadow-[2px_2px_0px_0px_#fff]">
-              <Clock className="h-4 w-4 sm:h-5 sm:w-5 stroke-[2.5]" />
+            <div className="flex h-9 w-9 items-center justify-center border-2 border-black bg-[#facc15] text-black shadow-[2px_2px_0px_0px_#000] transition-all group-hover:-translate-x-0.5 group-hover:-translate-y-0.5 group-hover:shadow-[3px_3px_0px_0px_#000] dark:border-white dark:shadow-[2px_2px_0px_0px_#fff]">
+              <Clock className="h-5 w-5 stroke-[2.5]" />
             </div>
-            <div className="flex items-center space-x-1.5">
-              <span className="text-sm sm:text-[17px] font-black tracking-tight text-black dark:text-white uppercase font-sans whitespace-nowrap">
+            <div className="flex items-center space-x-2">
+              <span className="text-[16px] sm:text-[17px] font-bold tracking-tight text-black dark:text-white font-sans whitespace-nowrap">
                 <span className="inline sm:hidden">Dividendo</span>
                 <span className="hidden sm:inline">Dividendo de Tiempo</span>
               </span>
-              <span className="hidden lg:inline-flex border-2 border-black bg-white px-2 py-0.2 text-[10px] font-mono font-bold tracking-wider text-black shadow-[1.5px_1.5px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[1.5px_1.5px_0px_0px_#fff]">
-                FIRE CHILE
+              <span className="hidden lg:inline-flex items-center h-6 border-2 border-black bg-white px-2 text-[11px] font-mono font-semibold tracking-tight text-black shadow-[1.5px_1.5px_0px_0px_#000] dark:border-white dark:bg-zinc-800 dark:text-white dark:shadow-[1.5px_1.5px_0px_0px_#fff]">
+                FIRE Chile
               </span>
             </div>
           </Link>
         </div>
 
-        {/* Action Controls */}
-        <div className="flex items-center space-x-1 sm:space-x-2">
+        {/* Action Controls - Todos alineados con h-9 */}
+        <div className="flex items-center space-x-1.5 sm:space-x-2">
           {/* Micro-indicador de UF en vivo */}
-          <div className="hidden xl:flex items-center space-x-1.5 border-2 border-black bg-white px-2.5 py-1 text-xs font-mono font-bold text-black shadow-[2px_2px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-900 dark:text-zinc-100 dark:shadow-[2px_2px_0px_0px_#fff]">
+          <div className="hidden xl:inline-flex h-9 items-center space-x-1.5 border-2 border-black bg-white px-3 text-xs font-mono font-semibold text-black shadow-[2px_2px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-900 dark:text-zinc-100 dark:shadow-[2px_2px_0px_0px_#fff] whitespace-nowrap">
             <span
               className={`h-2 w-2 border border-black ${
                 isLiveUf ? 'bg-emerald-500 animate-pulse' : 'bg-neutral-400'
@@ -106,13 +105,13 @@ export function Header({
             />
           </div>
 
-          {/* Currency Switcher Brutalista */}
+          {/* Currency Switcher Brutalista con altura uniforme h-9 */}
           {onCurrencyToggle && (
-            <div className="flex items-center border-2 border-black bg-white p-0.5 text-[11px] sm:text-xs font-mono font-bold shadow-[1.5px_1.5px_0px_0px_#000] sm:shadow-[2px_2px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-900 dark:shadow-[1.5px_1.5px_0px_0px_#fff] sm:dark:shadow-[2px_2px_0px_0px_#fff]">
+            <div className="inline-flex h-9 items-center border-2 border-black bg-white p-0.5 text-xs font-mono font-bold shadow-[2px_2px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-900 dark:shadow-[2px_2px_0px_0px_#fff]">
               <button
                 type="button"
                 onClick={() => onCurrencyToggle('CLP')}
-                className={`px-2 py-0.5 sm:px-2.5 sm:py-1 transition-all ${
+                className={`h-full px-2.5 flex items-center justify-center transition-all ${
                   currencyMode === 'CLP'
                     ? 'border-2 border-black bg-black text-white dark:border-white dark:bg-white dark:text-black'
                     : 'text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white border-2 border-transparent'
@@ -124,7 +123,7 @@ export function Header({
               <button
                 type="button"
                 onClick={() => onCurrencyToggle('UF')}
-                className={`px-2 py-0.5 sm:px-2.5 sm:py-1 transition-all ${
+                className={`h-full px-2.5 flex items-center justify-center transition-all ${
                   currencyMode === 'UF'
                     ? 'border-2 border-black bg-black text-white dark:border-white dark:bg-white dark:text-black'
                     : 'text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white border-2 border-transparent'
@@ -136,67 +135,67 @@ export function Header({
             </div>
           )}
 
-          {/* Dark / Light Mode Brutalist Switch Button - ALWAYS VISIBLE */}
+          {/* Dark / Light Mode Switch Button - Altura uniforme h-9 */}
           <button
             type="button"
             onClick={toggleTheme}
             aria-label="Cambiar modo oscuro / claro"
             title={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
-            className="flex items-center space-x-1 sm:space-x-1.5 border-2 border-black bg-white px-2 py-1 sm:px-2.5 sm:py-1.5 text-xs font-mono font-bold text-black shadow-[1.5px_1.5px_0px_0px_#000] sm:shadow-[2px_2px_0px_0px_#000] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none dark:border-zinc-200 dark:bg-zinc-900 dark:text-zinc-100 dark:shadow-[1.5px_1.5px_0px_0px_#fff] sm:dark:shadow-[2px_2px_0px_0px_#fff]"
+            className="inline-flex h-9 items-center space-x-1.5 border-2 border-black bg-white px-2.5 text-xs font-mono font-semibold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none dark:border-zinc-200 dark:bg-zinc-900 dark:text-zinc-100 dark:shadow-[2px_2px_0px_0px_#fff]"
           >
             {mounted && isDark ? (
               <>
-                <Sun className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-[#facc15] stroke-[2.5]" />
-                <span className="hidden md:inline">CLARO</span>
+                <Sun className="h-4 w-4 text-[#facc15] stroke-[2.5]" />
+                <span className="hidden md:inline">Claro</span>
               </>
             ) : (
               <>
-                <Moon className="h-3.5 w-3.5 sm:h-4 sm:w-4 stroke-[2.5]" />
-                <span className="hidden md:inline">OSCURO</span>
+                <Moon className="h-4 w-4 stroke-[2.5]" />
+                <span className="hidden md:inline">Oscuro</span>
               </>
             )}
           </button>
 
-          {/* Share Button (desktop & tablet) */}
+          {/* Share Button - Altura uniforme h-9 */}
           <button
             type="button"
             onClick={handleShare}
-            className="hidden sm:inline-flex items-center space-x-1.5 border-2 border-black bg-white px-2.5 py-1 sm:px-3 sm:py-1.5 text-xs font-mono font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none dark:border-zinc-200 dark:bg-zinc-900 dark:text-zinc-100 dark:shadow-[2px_2px_0px_0px_#fff]"
+            className="hidden sm:inline-flex h-9 items-center space-x-1.5 border-2 border-black bg-white px-3 text-xs font-mono font-semibold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none dark:border-zinc-200 dark:bg-zinc-900 dark:text-zinc-100 dark:shadow-[2px_2px_0px_0px_#fff]"
           >
             {copied ? (
               <>
-                <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400 stroke-[2.5]" />
-                <span className="text-emerald-700 font-bold dark:text-emerald-400">¡COPIADO!</span>
+                <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400 stroke-[2.5]" />
+                <span className="text-emerald-700 font-bold dark:text-emerald-400">¡Copiado!</span>
               </>
             ) : (
               <>
-                <Share2 className="h-3.5 w-3.5 stroke-[2]" />
-                <span className="hidden md:inline">COMPARTIR</span>
+                <Share2 className="h-4 w-4 stroke-[2]" />
+                <span className="hidden md:inline">Compartir</span>
               </>
             )}
           </button>
 
-          {/* PDF Report Button (desktop) */}
+          {/* PDF Report Button - Altura uniforme h-9 */}
           {onDownloadPdf && (
             <button
               type="button"
               onClick={onDownloadPdf}
-              className="hidden md:inline-flex items-center space-x-1.5 border-2 border-black bg-white px-3 py-1.5 text-xs font-mono font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none dark:border-zinc-200 dark:bg-zinc-900 dark:text-zinc-100 dark:shadow-[2px_2px_0px_0px_#fff]"
+              className="hidden md:inline-flex h-9 items-center space-x-1.5 border-2 border-black bg-white px-3 text-xs font-mono font-semibold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none dark:border-zinc-200 dark:bg-zinc-900 dark:text-zinc-100 dark:shadow-[2px_2px_0px_0px_#fff]"
               title="Guardar o imprimir reporte en PDF"
             >
-              <Printer className="h-3.5 w-3.5 stroke-[2]" />
-              <span>PDF</span>
+              <Printer className="h-4 w-4 stroke-[2]" />
+              <span>Reporte PDF</span>
             </button>
           )}
 
-          {/* Guía FIRE Button */}
+          {/* Guía FIRE Button - Altura uniforme h-9 */}
           <Link
             href="/guia-fire-chile"
-            className="inline-flex items-center space-x-1 border-2 border-black bg-[#facc15] px-2.5 py-1 sm:px-3 sm:py-1.5 text-xs font-mono font-black text-black shadow-[1.5px_1.5px_0px_0px_#000] sm:shadow-[2px_2px_0px_0px_#000] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:bg-[#fde047] hover:shadow-[3px_3px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none dark:border-white dark:shadow-[1.5px_1.5px_0px_0px_#fff]"
+            className="inline-flex h-9 items-center space-x-1 border-2 border-black bg-[#facc15] px-3 text-xs font-mono font-bold text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:bg-[#fde047] hover:shadow-[3px_3px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none dark:border-white dark:shadow-[2px_2px_0px_0px_#fff]"
           >
-            <span className="hidden sm:inline">GUÍA FIRE</span>
-            <span className="sm:hidden">GUÍA</span>
-            <ArrowUpRight className="h-3.5 w-3.5 stroke-[2.5]" />
+            <span className="hidden sm:inline">Guía FIRE</span>
+            <span className="sm:hidden">Guía</span>
+            <ArrowUpRight className="h-4 w-4 stroke-[2.5]" />
           </Link>
         </div>
       </div>
