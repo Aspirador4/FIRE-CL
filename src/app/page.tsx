@@ -17,11 +17,7 @@ import {
 } from '@/lib/fireEngine';
 import { CurrencyMode } from '@/lib/formatters';
 import { DEFAULT_CHILE_PARAMS } from '@/lib/constants';
-import {
-  Sparkles,
-  ArrowRight,
-  BookOpen,
-} from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 export default function HomePage() {
@@ -89,20 +85,25 @@ export default function HomePage() {
       const afpParam = params.get('afp');
 
       if (edadParam || liquidoParam || gastoParam) {
-        setSimInput((prev) => ({
-          ...prev,
-          edadActual: edadParam ? Number(edadParam) : prev.edadActual,
-          sueldoLiquidoMensual: liquidoParam ? Number(liquidoParam) : prev.sueldoLiquidoMensual,
-          gastoMensualActual: gastoParam ? Number(gastoParam) : prev.gastoMensualActual,
-          patrimonioLiquidoInicial: liqPatParam ? Number(liqPatParam) : prev.patrimonioLiquidoInicial,
-          saldoAfpInicial: afpParam ? Number(afpParam) : prev.saldoAfpInicial,
-        }));
+        setTimeout(() => {
+          setSimInput((prev) => ({
+            ...prev,
+            edadActual: edadParam ? Number(edadParam) : prev.edadActual,
+            sueldoLiquidoMensual: liquidoParam ? Number(liquidoParam) : prev.sueldoLiquidoMensual,
+            gastoMensualActual: gastoParam ? Number(gastoParam) : prev.gastoMensualActual,
+            patrimonioLiquidoInicial: liqPatParam ? Number(liqPatParam) : prev.patrimonioLiquidoInicial,
+            saldoAfpInicial: afpParam ? Number(afpParam) : prev.saldoAfpInicial,
+          }));
+        }, 0);
       }
     }
   }, []);
 
-  // Ejecución de la simulación
-  const simulationResult: FireSimulationResult = runFireSimulation(simInput);
+  // Ejecución de la simulación con la UF dinámica activa
+  const simulationResult: FireSimulationResult = runFireSimulation({
+    ...simInput,
+    ufRate,
+  });
 
   const handleDownloadPdf = () => {
     if (typeof window !== 'undefined') {

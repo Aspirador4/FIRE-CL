@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { AdBanner } from '@/components/AdBanner';
-import { Flame, Clock, ShieldCheck, Baby, TrendingUp, Sparkles, BookOpen } from 'lucide-react';
+import { Flame, Clock, ShieldCheck, Baby, Sparkles, BookOpen } from 'lucide-react';
 
 export const metadata = {
   title: 'Guía FIRE Chile: Cómo Alcanzar la Libertad Financiera y Retirarte Joven',

@@ -34,6 +34,7 @@ export interface FireSimulationInput {
   tasaRetiroSeguroPct: number; // SWR (ej 4.0% o 3.5%)
   incluirPgu: boolean; // Si a partir de los 65 años recibe PGU
   montoPguMensual: number; // Monto PGU mensual
+  ufRate?: number; // Valor de la UF para cálculo de topes imponibles y conversiones
   hijos: ChildConfig[];
   flujosExtra: ExtraCashFlow[];
 }
@@ -137,7 +138,7 @@ export function runFireSimulation(
     ingresoTotalActual > 0 ? (ahorroTotalActual / ingresoTotalActual) * 100 : 0;
 
   // 1. Simulación base con hijos y flujos extra
-  const trayectoria = simulateTrajectory(input, edadLegalRetiro, swrFactor, true);
+  const trayectoria = simulateTrajectory(input, edadLegalRetiro, swrFactor);
 
   // 2. Simulación contrafactual SIN hijos para medir el impacto exacto
   const inputSinHijos: FireSimulationInput = {
@@ -147,8 +148,7 @@ export function runFireSimulation(
   const trayectoriaSinHijos = simulateTrajectory(
     inputSinHijos,
     edadLegalRetiro,
-    swrFactor,
-    true
+    swrFactor
   );
 
   // Encontrar edad FIRE
@@ -205,8 +205,7 @@ export function runFireSimulation(
 function simulateTrajectory(
   input: FireSimulationInput,
   edadLegalRetiro: number,
-  swrFactor: number,
-  optimizedBridge: boolean
+  swrFactor: number
 ): SimulationYearData[] {
   const trajectory: SimulationYearData[] = [];
   const maxAge = 90;
@@ -214,7 +213,6 @@ function simulateTrajectory(
   let currentLiquid = input.patrimonioLiquidoInicial;
   let currentAfp = input.saldoAfpInicial;
   let isRetired = false;
-  let retiredAtAge: number | null = null;
 
   const returnLiquid = input.rentabilidadPortafolioRealPct / 100;
   const returnAfp = input.rentabilidadAfpRealPct / 100;
@@ -265,8 +263,9 @@ function simulateTrajectory(
       ? 0
       : input.sueldoLiquidoMensual * 12 * growthMultiplier;
 
-    // Cotización obligatoria AFP sujeta al tope legal (84.3 UF)
-    const topeAfpClp = DEFAULT_CHILE_PARAMS.topeImponibleAfpUF * DEFAULT_CHILE_PARAMS.uf;
+    // Cotización obligatoria AFP sujeta al tope legal (84.3 UF indexada por la UF activa)
+    const currentUf = input.ufRate && input.ufRate > 0 ? input.ufRate : DEFAULT_CHILE_PARAMS.uf;
+    const topeAfpClp = DEFAULT_CHILE_PARAMS.topeImponibleAfpUF * currentUf;
     const aporteAfpEfectivoMensual = Math.min(
       input.aporteAfpMensual * growthMultiplier,
       topeAfpClp * DEFAULT_CHILE_PARAMS.afpLegalPct
@@ -301,7 +300,6 @@ function simulateTrajectory(
 
       if (canRetire) {
         isRetired = true;
-        retiredAtAge = age;
       }
     }
 

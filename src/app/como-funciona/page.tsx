@@ -1,9 +1,8 @@
 import React from 'react';
-import Link from 'next/link';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { AdBanner } from '@/components/AdBanner';
-import { Calculator, ShieldCheck, Database, Percent, BookOpen } from 'lucide-react';
+import { Calculator, ShieldCheck, Database, Percent } from 'lucide-react';
 
 export const metadata = {
   title: 'Metodología y Supuestos de Cálculo | Dividendo de Tiempo',

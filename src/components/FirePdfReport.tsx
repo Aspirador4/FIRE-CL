@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { FireSimulationResult, FireSimulationInput, SimulationYearData } from '@/lib/fireEngine';
 import { CurrencyMode, formatCompactMoney, formatMoney, formatPct } from '@/lib/formatters';
-import { Sparkles, Printer, CheckCircle2, ShieldCheck, TrendingUp } from 'lucide-react';
+import { Sparkles, Printer } from 'lucide-react';
 
 interface FirePdfReportProps {
   result: FireSimulationResult;
@@ -281,20 +281,17 @@ export function FirePdfReport({
 }: FirePdfReportProps) {
   const edadFire = result.edadFirePuente;
   const anosRestantes = result.anosHastaFire;
-  const [reportDate, setReportDate] = useState<string>('Noviembre 2026');
+  const [reportDate, setReportDate] = useState<string>('Fecha de generación');
 
   useEffect(() => {
-    try {
-      setReportDate(
-        new Date().toLocaleDateString('es-CL', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        })
-      );
-    } catch {
-      // Fallback
-    }
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setReportDate(
+      new Date().toLocaleDateString('es-CL', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    );
   }, []);
 
   const handlePrint = () => {

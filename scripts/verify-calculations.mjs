@@ -1,4 +1,4 @@
-import { calculateChileSalaryTax } from '../src/lib/chileTaxEngine.ts';
+import { calculateChileSalaryTax, calculateChileSalaryFromNet } from '../src/lib/chileTaxEngine.ts';
 import { runFireSimulation } from '../src/lib/fireEngine.ts';
 import { DEFAULT_CHILE_PARAMS } from '../src/lib/constants.ts';
 import assert from 'node:assert';
@@ -18,6 +18,38 @@ console.log(`✓ Sueldo Líquido: $${Math.round(taxResult.sueldoLiquido).toLocal
 console.log(`✓ Impuesto Único SII: $${Math.round(taxResult.impuestoSegundaCategoria).toLocaleString('es-CL')}`);
 console.log(`✓ Ahorro Fiscal APV B: $${Math.round(taxResult.apvBeneficioFiscalEstimado).toLocaleString('es-CL')}`);
 console.log('✅ Test 1 aprobado con éxito.\n');
+
+// Test 1b: Cálculo Inverso Sueldo Líquido -> Sueldo Bruto y Leyes Sociales
+console.log('Test 1b: Cálculo Inverso Sueldo Líquido $2.000.000 con Isapre (Plan 4.5 UF) y APV $100k');
+const targetLiquido = 2000000;
+const isapreHealth = {
+  system: 'isapre',
+  isaprePlanType: 'uf',
+  isaprePlanUf: 4.5, // 4.5 UF ~ $185.700
+};
+const inverseResult = calculateChileSalaryFromNet(
+  targetLiquido,
+  100000,
+  'B',
+  DEFAULT_CHILE_PARAMS,
+  isapreHealth
+);
+
+assert(
+  Math.abs(inverseResult.sueldoLiquido - targetLiquido) < 1,
+  `El sueldo líquido resultante (${inverseResult.sueldoLiquido}) debe ser igual al objetivo (${targetLiquido})`
+);
+assert(inverseResult.sueldoBruto > targetLiquido, 'Sueldo bruto debe ser superior al sueldo líquido');
+assert(inverseResult.salud.cotizacionAdicionalSalud > 0, 'Debe haber cotización adicional de salud si el plan excede el 7%');
+assert(inverseResult.salud.descuentoSaludTotal > inverseResult.salud.saludLegal7Pct, 'Descuento total de salud debe ser igual al plan de Isapre');
+assert(inverseResult.cotizacionAfp10 > 0, 'AFP 10% debe calcularse automáticamente');
+console.log(`✓ Sueldo Líquido Deseado: $${targetLiquido.toLocaleString('es-CL')}`);
+console.log(`✓ Sueldo Bruto Calculado: $${Math.round(inverseResult.sueldoBruto).toLocaleString('es-CL')}`);
+console.log(`✓ 10% AFP al fondo: $${Math.round(inverseResult.cotizacionAfp10).toLocaleString('es-CL')}`);
+console.log(`✓ Salud 7% Legal: $${Math.round(inverseResult.salud.saludLegal7Pct).toLocaleString('es-CL')}`);
+console.log(`✓ Cotización Adicional Isapre: $${Math.round(inverseResult.salud.cotizacionAdicionalSalud).toLocaleString('es-CL')}`);
+console.log(`✓ Impuesto 2da Cat SII: $${Math.round(inverseResult.impuestoSegundaCategoria).toLocaleString('es-CL')}`);
+console.log('✅ Test 1b aprobado con éxito.\n');
 
 // Test 2: Simulación FIRE sin hijos vs con hijos ('¿Y si tengo un hijo a los X años?')
 console.log('Test 2: Simulación de impacto de tener un hijo a los 34 años');

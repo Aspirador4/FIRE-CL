@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { runFireSimulation, FireSimulationInput } from '@/lib/fireEngine';
+import { InfoTooltip } from '@/components/InfoTooltip';
 
 interface SensitivityTableProps {
   baseInput: FireSimulationInput;
@@ -47,9 +48,15 @@ export function SensitivityTable({ baseInput }: SensitivityTableProps) {
           <span className="font-mono text-[11px] uppercase tracking-wider text-neutral-400">
             Sensibilidad
           </span>
-          <h3 className="text-[15px] font-semibold tracking-tight text-[#0a0a0a] dark:text-white mt-0.5">
-            Ahorro vs Rentabilidad Real
-          </h3>
+          <div className="flex items-center space-x-1.5 mt-0.5">
+            <h3 className="text-[15px] font-semibold tracking-tight text-[#0a0a0a] dark:text-white">
+              Ahorro vs Rentabilidad Real
+            </h3>
+            <InfoTooltip
+              title="Matriz de Sensibilidad"
+              content="Muestra en cuántos años alcanzarías la libertad financiera combinando diferentes tasas de ahorro (filas) con diferentes rentabilidades reales anuales de tus inversiones (columnas). Revela que aumentar tu tasa de ahorro acelera tu retiro mucho más rápido que buscar rentabilidades especulativas."
+            />
+          </div>
         </div>
       </div>
 

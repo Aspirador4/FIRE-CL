@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import { CurrencyMode, formatMoney, formatPct } from '@/lib/formatters';
 import { FireSimulationResult } from '@/lib/fireEngine';
+import { InfoTooltip } from '@/components/InfoTooltip';
 
 interface MetricCardsProps {
   result: FireSimulationResult;
@@ -37,8 +38,12 @@ export function MetricCards({
       {/* Tarjeta 1: Edad FIRE */}
       <div className="relative overflow-hidden rounded-2xl border border-black/[0.07] bg-white p-6 shadow-[0_1px_2px_rgba(10,10,10,0.02)] dark:border-white/[0.08] dark:bg-[#1a1a19]">
         <div className="flex items-center justify-between">
-          <span className="font-mono text-[11px] uppercase tracking-wider text-neutral-400">
-            Libertad Financiera
+          <span className="inline-flex items-center space-x-1.5 font-mono text-[11px] uppercase tracking-wider text-neutral-400">
+            <span>Libertad Financiera</span>
+            <InfoTooltip
+              title="Edad FIRE Puente"
+              content="La edad exacta a la que alcanzas la independencia financiera en Chile. Desde esta edad puedes dejar de trabajar y vivir de retiros de tu portafolio libre hasta los 60/65 años, momento en que se activa tu pensión AFP y la PGU."
+            />
           </span>
           {edadFire && (
             <span className="rounded-full border border-emerald-600/20 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-medium text-emerald-800 dark:border-emerald-500/20 dark:bg-emerald-950/60 dark:text-emerald-300">
@@ -74,8 +79,12 @@ export function MetricCards({
       {/* Tarjeta 2: Meta Patrimonial FIRE */}
       <div className="rounded-2xl border border-black/[0.07] bg-white p-6 shadow-[0_1px_2px_rgba(10,10,10,0.02)] dark:border-white/[0.08] dark:bg-[#1a1a19]">
         <div className="flex items-center justify-between">
-          <span className="font-mono text-[11px] uppercase tracking-wider text-neutral-400">
-            Meta FIRE (Regla del 4%)
+          <span className="inline-flex items-center space-x-1.5 font-mono text-[11px] uppercase tracking-wider text-neutral-400">
+            <span>Meta FIRE (Regla del 4%)</span>
+            <InfoTooltip
+              title="Meta Patrimonial FIRE"
+              content="El capital total requerido en tu portafolio libre para financiar tu presupuesto de jubilación mediante una Tasa de Retiro Seguro (SWR) del 4%, complementado luego por tu pensión de vejez legal de la AFP."
+            />
           </span>
           <span className="rounded-full border border-black/[0.08] bg-[#fafaf8] px-2.5 py-0.5 text-[11px] font-mono text-neutral-600 dark:border-white/[0.1] dark:bg-neutral-800 dark:text-neutral-300">
             {currencyMode}
@@ -95,8 +104,12 @@ export function MetricCards({
       {/* Tarjeta 3: Tasa de Ahorro */}
       <div className="rounded-2xl border border-black/[0.07] bg-white p-6 shadow-[0_1px_2px_rgba(10,10,10,0.02)] dark:border-white/[0.08] dark:bg-[#1a1a19]">
         <div className="flex items-center justify-between">
-          <span className="font-mono text-[11px] uppercase tracking-wider text-neutral-400">
-            Tasa de Ahorro Real
+          <span className="inline-flex items-center space-x-1.5 font-mono text-[11px] uppercase tracking-wider text-neutral-400">
+            <span>Tasa de Ahorro Real</span>
+            <InfoTooltip
+              title="Tasa de Ahorro Total Mensual"
+              content="Porcentaje de tu ingreso real total que se destina a acumular patrimonio: suma tu 10% obligatorio de AFP (que es tuyo e invertido), tu aporte APV con su beneficio fiscal y el excedente libre de tu sueldo líquido tras pagar tus gastos."
+            />
           </span>
           <span className="rounded-full border border-emerald-600/20 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-medium text-emerald-800 dark:border-emerald-500/20 dark:bg-emerald-950/60 dark:text-emerald-300">
             AFP + Libre
@@ -119,10 +132,24 @@ export function MetricCards({
       {/* Tarjeta 4: Impacto de Hijos o Pensión Legal */}
       <div className="rounded-2xl border border-black/[0.07] bg-white p-6 shadow-[0_1px_2px_rgba(10,10,10,0.02)] dark:border-white/[0.08] dark:bg-[#1a1a19]">
         <div className="flex items-center justify-between">
-          <span className="font-mono text-[11px] uppercase tracking-wider text-neutral-400">
-            {result.impactoHijos.diferenciaAnosFire > 0
-              ? 'Impacto Familiar'
-              : 'Pensión Legal (AFP)'}
+          <span className="inline-flex items-center space-x-1.5 font-mono text-[11px] uppercase tracking-wider text-neutral-400">
+            <span>
+              {result.impactoHijos.diferenciaAnosFire > 0
+                ? 'Impacto Familiar'
+                : 'Pensión Legal (AFP)'}
+            </span>
+            <InfoTooltip
+              title={
+                result.impactoHijos.diferenciaAnosFire > 0
+                  ? 'Impacto Financiero de la Crianza'
+                  : 'Pensión Legal DL 3.500'
+              }
+              content={
+                result.impactoHijos.diferenciaAnosFire > 0
+                  ? 'Años adicionales requeridos para alcanzar FIRE debido al presupuesto de crianza, colegios y educación universitaria.'
+                  : 'A los 60 años en mujeres y 65 en hombres se desbloquea el retiro programado o renta vitalicia de tu AFP y la Pensión Garantizada Universal (PGU).'
+              }
+            />
           </span>
           <span
             className={`rounded-full border px-2.5 py-0.5 text-[11px] font-medium ${

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { calculateChileSalaryTax, SalaryBreakdown } from '@/lib/chileTaxEngine';
 import { CurrencyMode, formatMoney, formatPct } from '@/lib/formatters';
 import { DEFAULT_CHILE_PARAMS } from '@/lib/constants';
-import { Calculator, ShieldCheck, ChevronDown, ChevronUp, Sparkles, Info } from 'lucide-react';
+import { Calculator, ChevronDown, ChevronUp, Sparkles } from 'lucide-react';
 
 interface ChileTaxCalculatorProps {
   sueldoBruto: number;
@@ -35,7 +35,10 @@ export function ChileTaxCalculator({
     sueldoBruto,
     apvAporte,
     apvRegimen,
-    DEFAULT_CHILE_PARAMS
+    {
+      ...DEFAULT_CHILE_PARAMS,
+      uf: ufRate && ufRate > 0 ? ufRate : DEFAULT_CHILE_PARAMS.uf,
+    }
   );
 
   const handleApply = () => {
@@ -114,8 +117,8 @@ export function ChileTaxCalculator({
               </label>
               <select
                 value={apvRegimen}
-                onChange={(e) => onApvRegimenChange(e.target.value as any)}
-                className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-900 shadow-sm focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+                onChange={(e) => onApvRegimenChange(e.target.value as 'A' | 'B' | 'ninguno')}
+                className="mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-900 shadow-sm focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-white"
               >
                 <option value="ninguno">Sin APV</option>
                 <option value="A">Régimen A (+15% Bonificación Fiscal)</option>

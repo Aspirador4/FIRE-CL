@@ -5,6 +5,7 @@ import { ChildConfig } from '@/lib/fireEngine';
 import { CHILD_COST_PRESETS, ChildPreset } from '@/lib/constants';
 import { CurrencyMode, formatMoney, formatThousands, parseThousands } from '@/lib/formatters';
 import { Plus, Trash2, Sparkles } from 'lucide-react';
+import { InfoTooltip } from '@/components/InfoTooltip';
 
 interface ChildManagerProps {
   hijos: ChildConfig[];
@@ -73,9 +74,15 @@ export function ChildManager({
           <span className="font-mono text-[11px] uppercase tracking-wider text-neutral-400">
             06 / Planificación Familiar
           </span>
-          <h3 className="text-[15px] font-semibold tracking-tight text-[#0a0a0a] dark:text-white mt-0.5">
-            ¿Y si tengo un hijo a los X años?
-          </h3>
+          <div className="flex items-center space-x-1.5 mt-0.5">
+            <h3 className="text-[15px] font-semibold tracking-tight text-[#0a0a0a] dark:text-white">
+              ¿Y si tengo un hijo a los X años?
+            </h3>
+            <InfoTooltip
+              title="Impacto Financiero de los Hijos"
+              content="Modela con realismo cómo cambian tus flujos de caja y capacidad de ahorro según la etapa de vida de tus hijos (sala cuna, colegio y educación superior en Chile), calculando el impacto en tu edad de retiro."
+            />
+          </div>
         </div>
 
         <button

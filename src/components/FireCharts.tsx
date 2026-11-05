@@ -34,10 +34,8 @@ export function FireCharts({
   data,
   currencyMode,
   ufRate,
-  edadActual,
   edadFire,
   edadLegal,
-  metaFire,
   tieneHijos,
 }: FireChartsProps) {
   const [activeTab, setActiveTab] = useState<'acumulacion' | 'flujos' | 'hijos'>(
@@ -48,9 +46,17 @@ export function FireCharts({
     return formatCompactMoney(val, currencyMode, ufRate);
   };
 
-  const customTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      const yearData: SimulationYearData = payload[0]?.payload;
+  const customTooltip = ({
+    active,
+    payload,
+    label,
+  }: {
+    active?: boolean;
+    payload?: readonly { payload?: SimulationYearData }[];
+    label?: string | number;
+  }) => {
+    if (active && payload && payload.length && payload[0]?.payload) {
+      const yearData: SimulationYearData = payload[0].payload;
       return (
         <div className="min-w-[220px] rounded-xl border border-black/[0.08] bg-white/95 p-4 text-xs shadow-[0_4px_20px_rgba(10,10,10,0.08)] backdrop-blur-md dark:border-white/[0.1] dark:bg-[#1a1a19]/95 space-y-2">
           <div className="flex items-center justify-between border-b border-black/[0.05] pb-2 dark:border-white/[0.06]">

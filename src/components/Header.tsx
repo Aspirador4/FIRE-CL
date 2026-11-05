@@ -3,7 +3,8 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { CurrencyMode } from '@/lib/formatters';
-import { Clock, Share2, Check, BookOpen, ArrowUpRight, Printer } from 'lucide-react';
+import { Clock, Share2, Check, ArrowUpRight, Printer } from 'lucide-react';
+import { InfoTooltip } from '@/components/InfoTooltip';
 
 interface HeaderProps {
   currencyMode?: CurrencyMode;
@@ -55,10 +56,13 @@ export function Header({
           {/* Micro-indicador de UF en vivo */}
           <div
             className="hidden lg:flex items-center space-x-1.5 rounded-full border border-black/[0.06] bg-white/60 px-2.5 py-1 text-[11px] font-mono text-neutral-600 dark:border-white/[0.08] dark:bg-neutral-900/60 dark:text-neutral-300"
-            title={isLiveUf ? 'Valor oficial UF del Banco Central en tiempo real' : 'Valor referencial de la UF'}
           >
             <span className={`h-1.5 w-1.5 rounded-full ${isLiveUf ? 'bg-emerald-500 animate-pulse' : 'bg-neutral-400'}`} />
             <span>1 UF = ${ufRate.toLocaleString('es-CL', { maximumFractionDigits: 0 })}</span>
+            <InfoTooltip
+              title="Unidad de Fomento (UF) en Chile"
+              content={`Valor oficial de referencia: $${ufRate.toLocaleString('es-CL', { maximumFractionDigits: 0 })} CLP. En esta simulación, la UF orienta directamente el tope imponible obligatorio de AFP (84.3 UF = $${Math.round(84.3 * ufRate).toLocaleString('es-CL')}), el tope de cesantía AFC (126.6 UF), el costo de tu plan de Isapre y el beneficio fiscal de APV Régimen B (50 UF/mes).`}
+            />
           </div>
 
           {/* Currency Switcher */}
