@@ -58,18 +58,18 @@ export function FireCharts({
     if (active && payload && payload.length && payload[0]?.payload) {
       const yearData: SimulationYearData = payload[0].payload;
       return (
-        <div className="min-w-[220px] rounded-xl border border-black/[0.08] bg-white/95 p-4 text-xs shadow-[0_4px_20px_rgba(10,10,10,0.08)] backdrop-blur-md dark:border-white/[0.1] dark:bg-[#1a1a19]/95 space-y-2">
-          <div className="flex items-center justify-between border-b border-black/[0.05] pb-2 dark:border-white/[0.06]">
-            <span className="font-semibold text-[#0a0a0a] dark:text-white">
+        <div className="min-w-[240px] border-2 border-black bg-white p-4 text-xs font-mono shadow-[4px_4px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-900 dark:text-zinc-100 dark:shadow-[4px_4px_0px_0px_#fff] space-y-2.5">
+          <div className="flex items-center justify-between border-b-2 border-black/10 pb-2 dark:border-zinc-800">
+            <span className="font-bold text-black dark:text-white uppercase">
               Edad: {label} años
             </span>
             <span
-              className={`rounded-full px-2.5 py-0.5 text-[10px] font-mono font-medium ${
+              className={`border-2 border-black px-2 py-0.5 text-[10px] font-black uppercase shadow-[1.5px_1.5px_0px_0px_#000] dark:border-zinc-200 ${
                 yearData.fase === 'trabajando'
-                  ? 'border border-black/[0.08] bg-[#fafaf8] text-neutral-600 dark:border-white/[0.1] dark:bg-neutral-800 dark:text-neutral-300'
+                  ? 'bg-neutral-100 text-black dark:bg-zinc-800 dark:text-zinc-200'
                   : yearData.fase === 'puente_fire'
-                  ? 'border border-emerald-600/20 bg-emerald-50 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
-                  : 'border border-blue-600/20 bg-blue-50 text-blue-800 dark:bg-blue-950 dark:text-blue-300'
+                  ? 'bg-[#facc15] text-black'
+                  : 'bg-blue-100 text-blue-950 dark:bg-blue-900 dark:text-blue-100'
               }`}
             >
               {yearData.fase === 'trabajando'
@@ -82,49 +82,55 @@ export function FireCharts({
 
           <div className="space-y-1.5 pt-0.5">
             <div className="flex justify-between">
-              <span className="text-neutral-500">
+              <span className="text-neutral-500 dark:text-neutral-400">
                 Portafolio Libre:
               </span>
-              <span className="font-semibold tabular-nums text-[#0a0a0a] dark:text-white">
+              <span className="font-bold tabular-nums text-black dark:text-white">
                 {formatMoney(yearData.patrimonioLiquido, currencyMode, ufRate)}
               </span>
             </div>
+
             <div className="flex justify-between">
-              <span className="text-neutral-500">
+              <span className="text-neutral-500 dark:text-neutral-400">
                 Fondo AFP:
               </span>
-              <span className="font-semibold tabular-nums text-[#0a0a0a] dark:text-white">
+              <span className="font-bold tabular-nums text-blue-600 dark:text-blue-400">
                 {formatMoney(yearData.patrimonioAfp, currencyMode, ufRate)}
               </span>
             </div>
-            <div className="flex justify-between border-t border-black/[0.05] pt-1.5 font-semibold dark:border-white/[0.06]">
-              <span className="text-neutral-800 dark:text-neutral-200">
+
+            <div className="flex justify-between border-t border-black/10 pt-1.5 dark:border-zinc-800">
+              <span className="font-bold text-black dark:text-white">
                 Patrimonio Total:
               </span>
-              <span className="tabular-nums text-emerald-700 dark:text-emerald-400">
+              <span className="font-black tabular-nums text-black dark:text-white">
                 {formatMoney(yearData.patrimonioTotal, currencyMode, ufRate)}
               </span>
             </div>
 
-            {yearData.gastoHijosAnual > 0 && (
-              <div className="flex justify-between text-amber-700 dark:text-amber-400 pt-0.5 text-[11px]">
-                <span>Crianza Hijos:</span>
-                <span className="tabular-nums">
-                  {formatMoney(yearData.gastoHijosAnual, currencyMode, ufRate)}/año
+            {yearData.fase !== 'trabajando' && (
+              <div className="flex justify-between border-t border-dashed border-black/20 pt-1 text-[11px] text-amber-700 dark:text-amber-400 dark:border-zinc-800">
+                <span>Retiro Anual:</span>
+                <span className="font-bold tabular-nums">
+                  {formatMoney(yearData.retiroAnualPortafolio, currencyMode, ufRate)}
                 </span>
               </div>
             )}
 
-            {yearData.pensionAnualAfp > 0 && (
-              <div className="flex justify-between text-blue-700 dark:text-blue-400 pt-0.5 text-[11px]">
+            {yearData.fase === 'retiro_legal' && (
+              <div className="flex justify-between text-[11px] text-blue-700 dark:text-blue-400">
                 <span>Pensión AFP + PGU:</span>
-                <span className="tabular-nums">
-                  {formatMoney(
-                    yearData.pensionAnualAfp + yearData.pguAnual,
-                    currencyMode,
-                    ufRate
-                  )}
-                  /año
+                <span className="font-bold tabular-nums">
+                  {formatMoney(yearData.pensionAnualAfp + yearData.pguAnual, currencyMode, ufRate)}/año
+                </span>
+              </div>
+            )}
+
+            {yearData.gastoHijosAnual > 0 && (
+              <div className="flex justify-between text-[11px] text-orange-700 dark:text-orange-400">
+                <span>Gasto Crianza:</span>
+                <span className="font-bold tabular-nums">
+                  {formatMoney(yearData.gastoHijosAnual, currencyMode, ufRate)}
                 </span>
               </div>
             )}
@@ -136,52 +142,61 @@ export function FireCharts({
   };
 
   return (
-    <div className="rounded-2xl border border-black/[0.07] bg-white p-6 shadow-[0_1px_2px_rgba(10,10,10,0.02)] dark:border-white/[0.08] dark:bg-[#1a1a19]">
-      {/* Header y Selector de Pestañas */}
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-black/[0.05] pb-3 dark:border-white/[0.06]">
+    <div className="relative border-2 border-black bg-white p-5 sm:p-6 shadow-[4px_4px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#facc15] space-y-5">
+      {/* Selector de Vistas y Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-black/10 pb-4 dark:border-zinc-800">
         <div>
-          <span className="font-mono text-[11px] uppercase tracking-wider text-neutral-400">
-            Visualización
+          <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+            [ SIMULACIÓN DINÁMICA ]
           </span>
-          <h3 className="text-[15px] font-semibold tracking-tight text-[#0a0a0a] dark:text-white mt-0.5">
+          <h3 className="text-lg sm:text-xl font-black tracking-tight text-black dark:text-white uppercase font-sans">
             Proyección de Jubilación y Curva Patrimonial
           </h3>
         </div>
 
-        <div className="flex items-center rounded-full border border-black/[0.08] bg-[#f5f4f2] p-0.5 text-xs font-medium dark:border-white/[0.1] dark:bg-neutral-800">
+        {/* Tab Controls Brutalistas */}
+        <div className="flex items-center border-2 border-black bg-white p-0.5 text-[11px] sm:text-xs font-mono font-bold shadow-[1.5px_1.5px_0px_0px_#000] sm:shadow-[2px_2px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-950 dark:shadow-[1.5px_1.5px_0px_0px_#fff] sm:dark:shadow-[2px_2px_0px_0px_#fff]">
           <button
+            type="button"
             onClick={() => setActiveTab('acumulacion')}
-            className={`flex items-center space-x-1.5 rounded-full px-3 py-1 transition-all duration-150 active:scale-[0.98] ${
+            className={`flex items-center space-x-1 px-2 py-1 sm:px-3 sm:py-1.5 transition-all ${
               activeTab === 'acumulacion'
-                ? 'bg-[#0a0a0a] text-white shadow-sm dark:bg-white dark:text-[#0a0a0a]'
-                : 'text-neutral-600 hover:text-black dark:text-neutral-400 dark:hover:text-white'
+                ? 'border-2 border-black bg-black text-white dark:border-white dark:bg-white dark:text-black'
+                : 'text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white border-2 border-transparent'
             }`}
           >
-            <TrendingUp className="h-3.5 w-3.5" />
-            <span>Patrimonio y Cruce</span>
+            <TrendingUp className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+            <span className="hidden sm:inline">Patrimonio y Cruce</span>
+            <span className="sm:hidden">Patrimonio</span>
           </button>
+
           <button
+            type="button"
             onClick={() => setActiveTab('flujos')}
-            className={`flex items-center space-x-1.5 rounded-full px-3 py-1 transition-all duration-150 active:scale-[0.98] ${
+            className={`flex items-center space-x-1 px-2 py-1 sm:px-3 sm:py-1.5 transition-all ${
               activeTab === 'flujos'
-                ? 'bg-[#0a0a0a] text-white shadow-sm dark:bg-white dark:text-[#0a0a0a]'
-                : 'text-neutral-600 hover:text-black dark:text-neutral-400 dark:hover:text-white'
+                ? 'border-2 border-black bg-black text-white dark:border-white dark:bg-white dark:text-black'
+                : 'text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white border-2 border-transparent'
             }`}
           >
-            <BarChart3 className="h-3.5 w-3.5" />
-            <span>Flujos Anuales</span>
+            <BarChart3 className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+            <span className="hidden sm:inline">Flujos Anuales</span>
+            <span className="sm:hidden">Flujos</span>
           </button>
+
           {tieneHijos && (
             <button
+              type="button"
               onClick={() => setActiveTab('hijos')}
-              className={`flex items-center space-x-1.5 rounded-full px-3 py-1 transition-all duration-150 active:scale-[0.98] ${
+              className={`flex items-center space-x-1 px-2 py-1 sm:px-3 sm:py-1.5 transition-all ${
                 activeTab === 'hijos'
-                  ? 'bg-[#0a0a0a] text-white shadow-sm dark:bg-white dark:text-[#0a0a0a]'
-                  : 'text-neutral-600 hover:text-black dark:text-neutral-400 dark:hover:text-white'
+                  ? 'border-2 border-black bg-black text-white dark:border-white dark:bg-white dark:text-black'
+                  : 'text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white border-2 border-transparent'
               }`}
             >
-              <Baby className="h-3.5 w-3.5" />
-              <span>Gasto Crianza</span>
+              <Baby className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+              <span className="hidden sm:inline">Gasto Crianza</span>
+              <span className="sm:hidden">Crianza</span>
             </button>
           )}
         </div>
@@ -190,70 +205,80 @@ export function FireCharts({
       {/* Gráfico 1: Acumulación de Patrimonio y Meta FIRE */}
       {activeTab === 'acumulacion' && (
         <div className="space-y-4">
-          <div className="h-[370px] w-full">
+          <div className="h-[380px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart
                 data={data}
-                margin={{ top: 14, right: 14, left: 0, bottom: 0 }}
+                margin={{ top: 20, right: 16, left: 16, bottom: 5 }}
               >
                 <defs>
                   <linearGradient id="colorLiquid" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#059669" stopOpacity={0.35} />
-                    <stop offset="95%" stopColor="#059669" stopOpacity={0.0} />
+                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.4} />
+                    <stop offset="95%" stopColor="#10b981" stopOpacity={0.02} />
                   </linearGradient>
                   <linearGradient id="colorAfp" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#2563eb" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#2563eb" stopOpacity={0.0} />
+                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.35} />
+                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.02} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke="#eae9e5"
-                  className="dark:stroke-neutral-800"
+                  strokeDasharray="2 2"
+                  stroke="#e4e4e7"
+                  className="dark:stroke-zinc-800"
                 />
                 <XAxis
                   dataKey="edad"
-                  tickLine={false}
+                  tickLine={true}
                   tickFormatter={(val) => `${val}a`}
-                  className="text-xs text-neutral-400"
+                  className="text-xs font-mono font-bold"
+                  stroke="#71717a"
                 />
                 <YAxis
-                  tickLine={false}
+                  tickLine={true}
                   tickFormatter={formatYAxis}
-                  className="text-xs text-neutral-400 font-mono"
-                  width={68}
+                  className="text-xs font-mono font-bold"
+                  width={82}
+                  stroke="#71717a"
                 />
                 <Tooltip content={customTooltip} />
                 <Legend
-                  wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }}
+                  wrapperStyle={{
+                    fontSize: '12px',
+                    fontFamily: 'monospace',
+                    fontWeight: 'bold',
+                    paddingTop: '12px',
+                  }}
                 />
 
                 {edadFire && (
                   <ReferenceLine
                     x={edadFire}
                     stroke="#059669"
-                    strokeWidth={1.5}
+                    strokeWidth={2}
                     strokeDasharray="4 4"
                     label={{
-                      value: `Libertad FIRE (${edadFire}a)`,
+                      value: `★ LIBERTAD FIRE (${edadFire}a)`,
                       position: 'top',
                       fill: '#059669',
                       fontSize: 11,
-                      fontWeight: 600,
+                      fontWeight: 800,
+                      fontFamily: 'monospace',
                     }}
                   />
                 )}
 
                 <ReferenceLine
                   x={edadLegal}
-                  stroke="#737373"
-                  strokeWidth={1}
+                  stroke="#71717a"
+                  strokeWidth={1.5}
                   strokeDasharray="3 3"
                   label={{
-                    value: `Pensión Legal (${edadLegal}a)`,
+                    value: `LEGAL (${edadLegal}a)`,
                     position: 'insideTopLeft',
-                    fill: '#737373',
+                    fill: '#71717a',
                     fontSize: 10,
+                    fontWeight: 700,
+                    fontFamily: 'monospace',
                   }}
                 />
 
@@ -262,7 +287,7 @@ export function FireCharts({
                   dataKey="patrimonioLiquido"
                   name="Portafolio Libre (Puente)"
                   stroke="#059669"
-                  strokeWidth={2}
+                  strokeWidth={2.5}
                   fillOpacity={1}
                   fill="url(#colorLiquid)"
                   stackId="1"
@@ -272,7 +297,7 @@ export function FireCharts({
                   dataKey="patrimonioAfp"
                   name="Fondo AFP Obligatorio"
                   stroke="#2563eb"
-                  strokeWidth={2}
+                  strokeWidth={2.5}
                   fillOpacity={1}
                   fill="url(#colorAfp)"
                   stackId="1"
@@ -282,7 +307,7 @@ export function FireCharts({
                   dataKey="metaFireTradicional"
                   name="Meta 100% Independiente"
                   stroke="#d97706"
-                  strokeWidth={1.5}
+                  strokeWidth={2}
                   strokeDasharray="4 4"
                   dot={false}
                 />
@@ -290,17 +315,17 @@ export function FireCharts({
             </ResponsiveContainer>
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-black/[0.05] bg-[#fafaf8] p-3 text-xs text-neutral-600 dark:border-white/[0.06] dark:bg-neutral-800/40 dark:text-neutral-400">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-2 border-black bg-neutral-50 p-3 text-xs font-mono font-bold dark:border-zinc-200 dark:bg-zinc-950 dark:text-neutral-300 shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#fff]">
             <div className="flex items-center space-x-2">
-              <span className="inline-block h-2 w-2 rounded-full bg-emerald-600" />
+              <span className="inline-block h-3 w-3 border border-black bg-emerald-500" />
               <span>
-                <strong>Portafolio Libre:</strong> Disponible en cualquier momento para el puente FIRE.
+                PORTAFOLIO LIBRE: Disponible para financiar la etapa puente antes de los {edadLegal} años.
               </span>
             </div>
             <div className="flex items-center space-x-2">
-              <span className="inline-block h-2 w-2 rounded-full bg-blue-600" />
+              <span className="inline-block h-3 w-3 border border-black bg-blue-500" />
               <span>
-                <strong>Fondo AFP:</strong> Crece con rentabilidad y se desbloquea a los {edadLegal} años.
+                FONDO AFP: Se desbloquea por ley a los {edadLegal} años con rentas y PGU.
               </span>
             </div>
           </div>
@@ -310,30 +335,39 @@ export function FireCharts({
       {/* Gráfico 2: Flujos Anuales por Fase */}
       {activeTab === 'flujos' && (
         <div className="space-y-4">
-          <div className="h-[370px] w-full">
+          <div className="h-[380px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={data}
-                margin={{ top: 14, right: 14, left: 0, bottom: 0 }}
+                margin={{ top: 20, right: 16, left: 16, bottom: 5 }}
               >
                 <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke="#eae9e5"
-                  className="dark:stroke-neutral-800"
+                  strokeDasharray="2 2"
+                  stroke="#e4e4e7"
+                  className="dark:stroke-zinc-800"
                 />
                 <XAxis
                   dataKey="edad"
-                  tickLine={false}
+                  tickLine={true}
                   tickFormatter={(val) => `${val}a`}
+                  className="text-xs font-mono font-bold"
+                  stroke="#71717a"
                 />
                 <YAxis
-                  tickLine={false}
+                  tickLine={true}
                   tickFormatter={formatYAxis}
-                  width={68}
+                  width={82}
+                  className="text-xs font-mono font-bold"
+                  stroke="#71717a"
                 />
                 <Tooltip content={customTooltip} />
                 <Legend
-                  wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }}
+                  wrapperStyle={{
+                    fontSize: '12px',
+                    fontFamily: 'monospace',
+                    fontWeight: 'bold',
+                    paddingTop: '12px',
+                  }}
                 />
 
                 <Bar
@@ -369,8 +403,8 @@ export function FireCharts({
             </ResponsiveContainer>
           </div>
 
-          <p className="text-[11px] text-neutral-500 leading-relaxed">
-            Observa el traspaso entre la etapa de acumulación activa con sueldo, la etapa puente sustentada por retiros del portafolio libre, y la posterior pensión autofinanciada.
+          <p className="border-2 border-black bg-neutral-50 p-2.5 text-xs font-mono font-medium text-neutral-700 dark:border-zinc-200 dark:bg-zinc-950 dark:text-neutral-300 shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#fff]">
+            Visualiza la transición financiera: acumulación activa mediante sueldo, puente de retiros privados, y retiro programado legal indexado.
           </p>
         </div>
       )}
@@ -378,30 +412,39 @@ export function FireCharts({
       {/* Gráfico 3: Impacto Crianza */}
       {activeTab === 'hijos' && tieneHijos && (
         <div className="space-y-4">
-          <div className="h-[370px] w-full">
+          <div className="h-[380px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart
                 data={data}
-                margin={{ top: 14, right: 14, left: 0, bottom: 0 }}
+                margin={{ top: 20, right: 16, left: 16, bottom: 5 }}
               >
                 <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke="#eae9e5"
-                  className="dark:stroke-neutral-800"
+                  strokeDasharray="2 2"
+                  stroke="#e4e4e7"
+                  className="dark:stroke-zinc-800"
                 />
                 <XAxis
                   dataKey="edad"
-                  tickLine={false}
+                  tickLine={true}
                   tickFormatter={(val) => `${val}a`}
+                  className="text-xs font-mono font-bold"
+                  stroke="#71717a"
                 />
                 <YAxis
-                  tickLine={false}
+                  tickLine={true}
                   tickFormatter={formatYAxis}
-                  width={68}
+                  width={82}
+                  className="text-xs font-mono font-bold"
+                  stroke="#71717a"
                 />
                 <Tooltip content={customTooltip} />
                 <Legend
-                  wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }}
+                  wrapperStyle={{
+                    fontSize: '12px',
+                    fontFamily: 'monospace',
+                    fontWeight: 'bold',
+                    paddingTop: '12px',
+                  }}
                 />
 
                 <Area
@@ -409,23 +452,25 @@ export function FireCharts({
                   dataKey="gastoHijosAnual"
                   name="Gasto Anual en Crianza"
                   stroke="#d97706"
-                  fill="#d97706"
-                  fillOpacity={0.25}
+                  fill="#facc15"
+                  strokeWidth={2}
+                  fillOpacity={0.4}
                 />
                 <Area
                   type="monotone"
                   dataKey="gastoBaseAnual"
                   name="Gasto de Vida Base"
-                  stroke="#a3a3a3"
-                  fill="#a3a3a3"
-                  fillOpacity={0.06}
+                  stroke="#71717a"
+                  fill="#a1a1aa"
+                  strokeWidth={1.5}
+                  fillOpacity={0.15}
                 />
               </AreaChart>
             </ResponsiveContainer>
           </div>
 
-          <p className="text-[11px] text-neutral-500 leading-relaxed">
-            La curva dorada muestra la concentración de gastos durante la crianza (0-23 años del hijo), tras lo cual se libera ese flujo de efectivo.
+          <p className="border-2 border-black bg-neutral-50 p-2.5 text-xs font-mono font-medium text-neutral-700 dark:border-zinc-200 dark:bg-zinc-950 dark:text-neutral-300 shadow-[2px_2px_0px_0px_#000] dark:shadow-[2px_2px_0px_0px_#fff]">
+            Concentración de costos por etapas de desarrollo (sala cuna, colegio y universidad) que luego retornan al flujo de ahorro.
           </p>
         </div>
       )}

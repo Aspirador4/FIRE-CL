@@ -37,18 +37,12 @@ export function AdBanner({
   if (!adsenseClientId) {
     return (
       <div
-        className={`relative overflow-hidden rounded-xl border border-slate-200/70 bg-slate-50/40 p-3.5 text-center transition-colors hover:bg-slate-50/70 dark:border-slate-800/80 dark:bg-slate-900/30 ${className}`}
+        className={`relative border-2 border-dashed border-black/20 bg-neutral-50/50 p-2.5 text-center font-mono dark:border-zinc-800 dark:bg-zinc-950/50 ${className}`}
       >
-        <div className="flex flex-col items-center justify-center space-y-0.5">
-          <span className="text-[9px] font-bold tracking-widest text-slate-400 uppercase">
-            {label}
-          </span>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            Espacio reservado para red de anuncios (AdSense / Mediavine)
-          </p>
-          <span className="text-[10px] text-slate-400 dark:text-slate-500 font-mono">
-            Formato: {format}
-          </span>
+        <div className="flex items-center justify-center space-x-2 text-[10px] text-neutral-500 dark:text-neutral-400 font-bold uppercase tracking-wider">
+          <span className="border border-black/20 px-1 dark:border-zinc-700">{label}</span>
+          <span>Espacio reservado (AdSense / Mediavine)</span>
+          <span className="text-neutral-400">[{format}]</span>
         </div>
       </div>
     );

@@ -22,121 +22,123 @@ export function MetricCards({
   const edadFire = result.edadFirePuente;
   const anosRestantes = result.anosHastaFire;
 
-  // Lanza confeti si el usuario alcanza FIRE antes de los 55 años
+  // Confeti si alcanza FIRE antes de los 55
   useEffect(() => {
     if (edadFire && edadFire <= 55 && edadFire > edadActual) {
       confetti({
-        particleCount: 40,
-        spread: 60,
+        particleCount: 50,
+        spread: 70,
         origin: { y: 0.6 },
       });
     }
   }, [edadFire, edadActual]);
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
       {/* Tarjeta 1: Edad FIRE */}
-      <div className="relative overflow-hidden rounded-2xl border border-black/[0.07] bg-white p-6 shadow-[0_1px_2px_rgba(10,10,10,0.02)] dark:border-white/[0.08] dark:bg-[#1a1a19]">
-        <div className="flex items-center justify-between">
-          <span className="inline-flex items-center space-x-1.5 font-mono text-[11px] uppercase tracking-wider text-neutral-400">
-            <span>Libertad Financiera</span>
+      <div className="relative border-2 border-black bg-white p-3.5 sm:p-5 shadow-[3px_3px_0px_0px_#000] sm:shadow-[4px_4px_0px_0px_#000] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-900 dark:shadow-[3px_3px_0px_0px_#facc15] sm:dark:shadow-[4px_4px_0px_0px_#facc15]">
+        <div className="flex items-center justify-between border-b-2 border-black/10 pb-2 dark:border-zinc-800">
+          <span className="inline-flex items-center space-x-1 font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-black dark:text-zinc-200">
+            <span>Libertad FIRE</span>
             <InfoTooltip
               title="Edad FIRE Puente"
-              content="La edad exacta a la que alcanzas la independencia financiera en Chile. Desde esta edad puedes dejar de trabajar y vivir de retiros de tu portafolio libre hasta los 60/65 años, momento en que se activa tu pensión AFP y la PGU."
+              content="La edad exacta en la que alcanzas la independencia financiera en Chile. Desde esta edad vives de retiros de tu portafolio libre hasta los 60/65 años, momento en que se activa tu pensión legal AFP y la PGU."
             />
           </span>
           {edadFire && (
-            <span className="rounded-full border border-emerald-600/20 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-medium text-emerald-800 dark:border-emerald-500/20 dark:bg-emerald-950/60 dark:text-emerald-300">
-              {anosRestantes !== null && anosRestantes > 0 ? `En ${anosRestantes} años` : 'Alcanzado'}
+            <span className="border-2 border-black bg-[#facc15] px-1.5 py-0.2 sm:px-2 sm:py-0.5 text-[9px] sm:text-[10px] font-mono font-black uppercase text-black shadow-[1px_1px_0px_0px_#000] dark:border-zinc-200">
+              {anosRestantes !== null && anosRestantes > 0 ? `En ${anosRestantes}a` : 'Listo'}
             </span>
           )}
         </div>
 
-        <div className="mt-4">
+        <div className="mt-3 sm:mt-4">
           {edadFire ? (
-            <div className="flex items-baseline space-x-1.5">
-              <span className="text-4xl font-semibold tracking-[-0.03em] text-[#0a0a0a] tabular-nums dark:text-white">
+            <div className="flex items-baseline space-x-1 sm:space-x-2">
+              <span className="text-3xl sm:text-5xl font-black tracking-tight text-black tabular-nums dark:text-white font-mono">
                 {edadFire}
               </span>
-              <span className="text-sm font-medium text-neutral-500">
-                años de edad
+              <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-neutral-600 dark:text-neutral-400 font-mono">
+                años
               </span>
             </div>
           ) : (
-            <span className="text-xl font-semibold text-amber-700">
-              Aumenta tu ahorro
+            <span className="text-lg sm:text-2xl font-black text-rose-600 uppercase font-mono">
+              Ahorrar más
             </span>
           )}
 
-          <p className="mt-1.5 text-xs text-neutral-500 leading-relaxed">
+          <div className="mt-2 border-t border-black/10 pt-1.5 text-[10px] sm:text-xs font-mono font-medium text-neutral-600 dark:border-zinc-800 dark:text-neutral-400">
             {anosRestantes !== null && edadFire !== null
-              ? `Jubilación anticipada ${result.edadLegalRetiro - edadFire} años antes de la ley.`
-              : 'El gasto mensual supera el ritmo de acumulación.'}
-          </p>
+              ? `${result.edadLegalRetiro - edadFire} años antes de la ley.`
+              : 'Gasto supera acumulación.'}
+          </div>
         </div>
       </div>
 
       {/* Tarjeta 2: Meta Patrimonial FIRE */}
-      <div className="rounded-2xl border border-black/[0.07] bg-white p-6 shadow-[0_1px_2px_rgba(10,10,10,0.02)] dark:border-white/[0.08] dark:bg-[#1a1a19]">
-        <div className="flex items-center justify-between">
-          <span className="inline-flex items-center space-x-1.5 font-mono text-[11px] uppercase tracking-wider text-neutral-400">
-            <span>Meta FIRE (Regla del 4%)</span>
+      <div className="relative border-2 border-black bg-white p-3.5 sm:p-5 shadow-[3px_3px_0px_0px_#000] sm:shadow-[4px_4px_0px_0px_#000] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-900 dark:shadow-[3px_3px_0px_0px_#facc15] sm:dark:shadow-[4px_4px_0px_0px_#facc15]">
+        <div className="flex items-center justify-between border-b-2 border-black/10 pb-2 dark:border-zinc-800">
+          <span className="inline-flex items-center space-x-1 font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-black dark:text-zinc-200">
+            <span>Meta FIRE (4%)</span>
             <InfoTooltip
               title="Meta Patrimonial FIRE"
-              content="El capital total requerido en tu portafolio libre para financiar tu presupuesto de jubilación mediante una Tasa de Retiro Seguro (SWR) del 4%, complementado luego por tu pensión de vejez legal de la AFP."
+              content="Capital requerido en tu portafolio libre para financiar tu presupuesto mediante una Tasa de Retiro Seguro (SWR) del 4%, complementado luego por la pensión AFP."
             />
           </span>
-          <span className="rounded-full border border-black/[0.08] bg-[#fafaf8] px-2.5 py-0.5 text-[11px] font-mono text-neutral-600 dark:border-white/[0.1] dark:bg-neutral-800 dark:text-neutral-300">
+          <span className="border-2 border-black bg-neutral-100 px-1.5 py-0.2 sm:px-2 sm:py-0.5 text-[9px] sm:text-[10px] font-mono font-black text-black shadow-[1px_1px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-800 dark:text-white">
             {currencyMode}
           </span>
         </div>
 
-        <div className="mt-4">
-          <div className="text-3xl font-semibold tracking-[-0.03em] text-[#0a0a0a] tabular-nums dark:text-white">
+        <div className="mt-3 sm:mt-4">
+          <div className="text-2xl sm:text-3xl font-black tracking-tight text-black tabular-nums dark:text-white font-mono break-words leading-tight">
             {formatMoney(result.metaPatrimonioFire, currencyMode, ufRate)}
           </div>
-          <p className="mt-1.5 text-xs text-neutral-500 leading-relaxed">
-            Patrimonio requerido para vivir de rentas perpetuas.
-          </p>
+          <div className="mt-2 border-t border-black/10 pt-1.5 text-[10px] sm:text-xs font-mono font-medium text-neutral-600 dark:border-zinc-800 dark:text-neutral-400">
+            Rentas perpetuas libres.
+          </div>
         </div>
       </div>
 
       {/* Tarjeta 3: Tasa de Ahorro */}
-      <div className="rounded-2xl border border-black/[0.07] bg-white p-6 shadow-[0_1px_2px_rgba(10,10,10,0.02)] dark:border-white/[0.08] dark:bg-[#1a1a19]">
-        <div className="flex items-center justify-between">
-          <span className="inline-flex items-center space-x-1.5 font-mono text-[11px] uppercase tracking-wider text-neutral-400">
-            <span>Tasa de Ahorro Real</span>
+      <div className="relative border-2 border-black bg-white p-3.5 sm:p-5 shadow-[3px_3px_0px_0px_#000] sm:shadow-[4px_4px_0px_0px_#000] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-900 dark:shadow-[3px_3px_0px_0px_#facc15] sm:dark:shadow-[4px_4px_0px_0px_#facc15]">
+        <div className="flex items-center justify-between border-b-2 border-black/10 pb-2 dark:border-zinc-800">
+          <span className="inline-flex items-center space-x-1 font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-black dark:text-zinc-200">
+            <span>Ahorro Real</span>
             <InfoTooltip
               title="Tasa de Ahorro Total Mensual"
-              content="Porcentaje de tu ingreso real total que se destina a acumular patrimonio: suma tu 10% obligatorio de AFP (que es tuyo e invertido), tu aporte APV con su beneficio fiscal y el excedente libre de tu sueldo líquido tras pagar tus gastos."
+              content="Porcentaje del ingreso total destinado a patrimonio: 10% obligatorio AFP, APV con beneficio fiscal y excedente líquido libre."
             />
           </span>
-          <span className="rounded-full border border-emerald-600/20 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-medium text-emerald-800 dark:border-emerald-500/20 dark:bg-emerald-950/60 dark:text-emerald-300">
-            AFP + Libre
+          <span className="border-2 border-black bg-emerald-100 px-1.5 py-0.2 sm:px-2 sm:py-0.5 text-[9px] sm:text-[10px] font-mono font-black text-emerald-950 shadow-[1px_1px_0px_0px_#000] dark:border-zinc-200 dark:bg-emerald-900 dark:text-emerald-100">
+            AFP+LIBRE
           </span>
         </div>
 
-        <div className="mt-4">
-          <div className="flex items-baseline space-x-1.5">
-            <span className="text-3xl font-semibold tracking-[-0.03em] text-[#0a0a0a] tabular-nums dark:text-white">
+        <div className="mt-3 sm:mt-4">
+          <div className="flex items-baseline space-x-1 sm:space-x-2">
+            <span className="text-2xl sm:text-4xl font-black tracking-tight text-black tabular-nums dark:text-white font-mono">
               {formatPct(result.tasaAhorroActualPct)}
             </span>
-            <span className="text-xs text-neutral-500">del ingreso</span>
+            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-neutral-600 dark:text-neutral-400 font-mono">
+              ingreso
+            </span>
           </div>
-          <p className="mt-1.5 text-xs text-neutral-500 leading-relaxed">
-            Suma tu 10% obligatorio AFP + APV + excedente libre.
-          </p>
+          <div className="mt-2 border-t border-black/10 pt-1.5 text-[10px] sm:text-xs font-mono font-medium text-neutral-600 dark:border-zinc-800 dark:text-neutral-400">
+            10% AFP + APV + excedente.
+          </div>
         </div>
       </div>
 
       {/* Tarjeta 4: Impacto de Hijos o Pensión Legal */}
-      <div className="rounded-2xl border border-black/[0.07] bg-white p-6 shadow-[0_1px_2px_rgba(10,10,10,0.02)] dark:border-white/[0.08] dark:bg-[#1a1a19]">
-        <div className="flex items-center justify-between">
-          <span className="inline-flex items-center space-x-1.5 font-mono text-[11px] uppercase tracking-wider text-neutral-400">
+      <div className="relative border-2 border-black bg-white p-3.5 sm:p-5 shadow-[3px_3px_0px_0px_#000] sm:shadow-[4px_4px_0px_0px_#000] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[5px_5px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-900 dark:shadow-[3px_3px_0px_0px_#facc15] sm:dark:shadow-[4px_4px_0px_0px_#facc15]">
+        <div className="flex items-center justify-between border-b-2 border-black/10 pb-2 dark:border-zinc-800">
+          <span className="inline-flex items-center space-x-1 font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-black dark:text-zinc-200">
             <span>
               {result.impactoHijos.diferenciaAnosFire > 0
-                ? 'Impacto Familiar'
-                : 'Pensión Legal (AFP)'}
+                ? 'Hijos'
+                : 'Pensión'}
             </span>
             <InfoTooltip
               title={
@@ -146,50 +148,50 @@ export function MetricCards({
               }
               content={
                 result.impactoHijos.diferenciaAnosFire > 0
-                  ? 'Años adicionales requeridos para alcanzar FIRE debido al presupuesto de crianza, colegios y educación universitaria.'
+                  ? 'Años adicionales requeridos para alcanzar FIRE debido al presupuesto familiar (colegios y universidad).'
                   : 'A los 60 años en mujeres y 65 en hombres se desbloquea el retiro programado o renta vitalicia de tu AFP y la Pensión Garantizada Universal (PGU).'
               }
             />
           </span>
           <span
-            className={`rounded-full border px-2.5 py-0.5 text-[11px] font-medium ${
+            className={`border-2 border-black px-1.5 py-0.2 sm:px-2 sm:py-0.5 text-[9px] sm:text-[10px] font-mono font-black uppercase shadow-[1px_1px_0px_0px_#000] dark:border-zinc-200 ${
               result.impactoHijos.diferenciaAnosFire > 0
-                ? 'border-amber-600/20 bg-amber-50 text-amber-800 dark:border-amber-500/20 dark:bg-amber-950/60 dark:text-amber-300'
-                : 'border-blue-600/20 bg-blue-50 text-blue-800 dark:border-blue-500/20 dark:bg-blue-950/60 dark:text-blue-300'
+                ? 'bg-orange-100 text-orange-950 dark:bg-orange-950 dark:text-orange-200'
+                : 'bg-blue-100 text-blue-950 dark:bg-blue-950 dark:text-blue-100'
             }`}
           >
-            {result.impactoHijos.diferenciaAnosFire > 0 ? 'Crianza' : 'Ley 3.500'}
+            {result.impactoHijos.diferenciaAnosFire > 0 ? 'Crianza' : 'Ley 3500'}
           </span>
         </div>
 
-        <div className="mt-4">
+        <div className="mt-3 sm:mt-4">
           {result.impactoHijos.diferenciaAnosFire > 0 ? (
             <>
               <div className="flex items-baseline space-x-1">
-                <span className="text-3xl font-semibold tracking-[-0.03em] text-amber-700 tabular-nums dark:text-amber-400">
+                <span className="text-2xl sm:text-4xl font-black tracking-tight text-orange-600 tabular-nums dark:text-orange-400 font-mono">
                   +{result.impactoHijos.diferenciaAnosFire}
                 </span>
-                <span className="text-xs font-medium text-neutral-600 dark:text-neutral-400">
-                  años a tu retiro
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-neutral-600 dark:text-neutral-400 font-mono">
+                  años
                 </span>
               </div>
-              <p className="mt-1.5 text-xs text-neutral-500 leading-relaxed">
-                Gasto total vida: {formatMoney(result.impactoHijos.gastoTotalHijosVida, currencyMode, ufRate)}
-              </p>
+              <div className="mt-2 border-t border-black/10 pt-1.5 text-[10px] sm:text-xs font-mono font-medium text-neutral-600 dark:border-zinc-800 dark:text-neutral-400 truncate">
+                {formatMoney(result.impactoHijos.gastoTotalHijosVida, currencyMode, ufRate)}
+              </div>
             </>
           ) : (
             <>
               <div className="flex items-baseline space-x-1">
-                <span className="text-3xl font-semibold tracking-[-0.03em] text-[#0a0a0a] tabular-nums dark:text-white">
+                <span className="text-2xl sm:text-4xl font-black tracking-tight text-black tabular-nums dark:text-white font-mono">
                   {result.edadLegalRetiro}
                 </span>
-                <span className="text-xs font-medium text-neutral-500">
-                  años (Edad Legal)
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-neutral-600 dark:text-neutral-400 font-mono">
+                  años
                 </span>
               </div>
-              <p className="mt-1.5 text-xs text-neutral-500 leading-relaxed">
-                Se activa tu pensión autofinanciada AFP + PGU.
-              </p>
+              <div className="mt-2 border-t border-black/10 pt-1.5 text-[10px] sm:text-xs font-mono font-medium text-neutral-600 dark:border-zinc-800 dark:text-neutral-400">
+                Pensión AFP + PGU.
+              </div>
             </>
           )}
         </div>

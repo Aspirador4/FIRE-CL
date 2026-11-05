@@ -12,7 +12,7 @@ export const metadata = {
 
 export default function ComoFuncionaPage() {
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 flex flex-col justify-between">
+    <div className="min-h-screen bg-[#f7f6f0] text-black dark:bg-[#0d0e12] dark:text-[#f4f4f7] flex flex-col justify-between">
       <Header />
 
       <main className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8 space-y-8">

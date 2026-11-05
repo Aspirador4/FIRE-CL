@@ -303,27 +303,27 @@ export function FirePdfReport({
   return (
     <>
       {/* Botón / Disparador en pantalla (se oculta al imprimir) */}
-      <div className="print:hidden rounded-2xl border border-black/[0.08] bg-white p-6 shadow-[0_1px_2px_rgba(10,10,10,0.02)] dark:border-white/[0.08] dark:bg-[#1a1a19] flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="space-y-1 text-center sm:text-left">
-          <div className="inline-flex items-center space-x-1.5 rounded-full border border-black/[0.08] bg-[#fafaf8] px-3 py-0.5 text-[11px] font-mono uppercase text-neutral-600 dark:border-white/[0.1] dark:bg-neutral-800 dark:text-neutral-300">
-            <Sparkles className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
-            <span>Documento Personalizado</span>
+      <div className="print:hidden border-2 border-black bg-white p-5 sm:p-6 shadow-[4px_4px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#facc15] flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="space-y-1.5 text-center sm:text-left">
+          <div className="inline-flex items-center space-x-1.5 border-2 border-black bg-[#facc15] px-2.5 py-0.5 text-[10px] font-mono font-black uppercase text-black shadow-[1.5px_1.5px_0px_0px_#000]">
+            <Sparkles className="h-3 w-3 stroke-[2.5]" />
+            <span>EXPEDIENTE PERSONALIZADO</span>
           </div>
-          <h3 className="text-base font-semibold text-[#0a0a0a] dark:text-white tracking-tight">
-            Descarga tu Hoja de Ruta hacia la Libertad Financiera
+          <h3 className="text-base sm:text-lg font-black uppercase text-black dark:text-white tracking-tight font-sans">
+            Hoja de Ruta hacia tu Libertad Financiera
           </h3>
-          <p className="text-xs text-neutral-500 max-w-lg leading-relaxed">
-            Genera un reporte ejecutivo en PDF con tus números clave, gráfico de proyección, estrategia de dos fases (Puente + AFP), cronograma familiar y compromisos de ahorro.
+          <p className="text-xs font-mono font-medium text-neutral-600 dark:text-neutral-400 max-w-xl leading-relaxed">
+            Genera un reporte ejecutivo en PDF con tus números clave, curvas de proyección, desglose de fases (Puente + AFP), cronograma familiar y plan de aportes.
           </p>
         </div>
 
         <button
           type="button"
           onClick={handlePrint}
-          className="inline-flex shrink-0 items-center space-x-2 rounded-full bg-[#0a0a0a] px-5 py-2.5 text-[13px] font-medium text-white shadow-sm transition-all duration-150 hover:bg-neutral-800 active:scale-[0.97] dark:bg-white dark:text-[#0a0a0a] dark:hover:bg-neutral-200"
+          className="inline-flex shrink-0 items-center space-x-2 border-2 border-black bg-black px-5 py-2.5 text-xs font-mono font-black text-white shadow-[2px_2px_0px_0px_#000] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none dark:border-white dark:bg-white dark:text-black dark:shadow-[2px_2px_0px_0px_#fff]"
         >
-          <Printer className="h-4 w-4" />
-          <span>Guardar Reporte en PDF</span>
+          <Printer className="h-4 w-4 stroke-[2.5]" />
+          <span>GUARDAR REPORTE PDF</span>
         </button>
       </div>
 

@@ -112,7 +112,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f4f2] text-[#0a0a0a] antialiased dark:bg-[#121211] dark:text-[#f4f4f2] flex flex-col justify-between">
+    <div className="min-h-screen bg-[#f7f6f0] text-black antialiased dark:bg-[#0d0e12] dark:text-[#f4f4f7] flex flex-col justify-between transition-colors">
       {/* Header */}
       <Header
         currencyMode={currencyMode}
@@ -122,22 +122,22 @@ export default function HomePage() {
         onDownloadPdf={handleDownloadPdf}
       />
 
-      <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 space-y-8">
-        {/* Hero Section al estilo TasteSkill */}
-        <section className="print:hidden text-center space-y-4 max-w-3xl mx-auto pt-4 pb-2">
-          <div className="inline-flex items-center space-x-2 rounded-full border border-black/[0.08] bg-white/80 px-4 py-1 text-[12px] font-mono tracking-tight text-neutral-700 shadow-[0_1px_2px_rgba(10,10,10,0.03)] dark:border-white/[0.1] dark:bg-neutral-900/80 dark:text-neutral-300">
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+      <main className="mx-auto max-w-7xl px-3 py-8 sm:px-6 lg:px-8 space-y-7">
+        {/* Hero Section Brutalista */}
+        <section className="print:hidden text-center space-y-4 max-w-4xl mx-auto pt-2 pb-1">
+          <div className="inline-flex items-center space-x-2 border-2 border-black bg-[#facc15] px-3.5 py-1 text-xs font-mono font-black uppercase text-black shadow-[2px_2px_0px_0px_#000] dark:border-white">
+            <span className="inline-block h-2 w-2 border border-black bg-emerald-500 animate-pulse" />
             <span>
-              CALCULADORA DE RETIRO CHILE · UF HOY: ${ufRate.toLocaleString('es-CL', { maximumFractionDigits: 0 })}
+              CALCULADORA RETIRO CHILE · UF HOY: ${ufRate.toLocaleString('es-CL', { maximumFractionDigits: 0 })}
             </span>
           </div>
 
-          <h1 className="text-4xl sm:text-6xl lg:text-[68px] font-semibold tracking-[-0.035em] leading-[1.06] text-[#0a0a0a] dark:text-white">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-black dark:text-white leading-[1.08] font-sans">
             El mayor dividendo del dinero es el tiempo.
           </h1>
 
-          <p className="text-base sm:text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto leading-relaxed font-normal">
-            Calcula con precisión matemática cuántos años necesitas para alcanzar la libertad financiera en Chile. Modela el puente de retiro temprano hasta tu pensión legal AFP, los beneficios tributarios de APV y el impacto de los hijos.
+          <p className="text-sm sm:text-base font-mono text-neutral-700 dark:text-neutral-300 max-w-2xl mx-auto leading-relaxed">
+            Calcula con precisión matemática cuántos años necesitas para alcanzar la libertad financiera en Chile. Modela el puente de retiro temprano hasta tu pensión AFP, los beneficios APV y el costo de los hijos.
           </p>
         </section>
 
@@ -179,10 +179,9 @@ export default function HomePage() {
         </div>
 
         {/* Controles y Formularios */}
-        <div className="print:hidden grid grid-cols-1 gap-8 lg:grid-cols-12">
+        <div className="print:hidden grid grid-cols-1 gap-7 lg:grid-cols-12">
           {/* Columna Izquierda: Entradas de la Calculadora (7 columnas) */}
           <div className="space-y-6 lg:col-span-7">
-            {/* Formulario Principal de Inputs */}
             <FireInputForm
               input={simInput}
               onChangeInput={setSimInput}
@@ -190,7 +189,6 @@ export default function HomePage() {
               ufRate={ufRate}
             />
 
-            {/* Módulo Especial: ¿Y si tengo un hijo a los X años? */}
             <ChildManager
               hijos={simInput.hijos}
               onChangeHijos={(hijos) => setSimInput({ ...simInput, hijos })}
@@ -201,43 +199,44 @@ export default function HomePage() {
             />
           </div>
 
-          {/* Columna Derecha: Matriz de Sensibilidad y Anuncios / Guías (5 columnas) */}
+          {/* Columna Derecha: Matriz de Sensibilidad y Conceptos Clave (5 columnas) */}
           <div className="space-y-6 lg:col-span-5">
-            {/* Matriz de Sensibilidad */}
             <SensitivityTable baseInput={simInput} />
 
-            {/* Banner Publicitario Lateral */}
             <AdBanner slotId="1000000011" format="rectangle" label="Publicidad" />
 
             {/* Card Educativo: Los 2 Pilares del FIRE Chileno */}
-            <div className="rounded-2xl border border-black/[0.07] bg-white p-6 shadow-[0_1px_2px_rgba(10,10,10,0.02)] dark:border-white/[0.08] dark:bg-[#1a1a19] space-y-3.5 text-xs">
-              <div className="flex items-center space-x-2">
-                <span className="font-mono text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
-                  Concepto Clave
+            <div className="border-2 border-black bg-white p-5 sm:p-6 shadow-[4px_4px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff] space-y-4 font-mono text-xs">
+              <div className="flex items-center space-x-2 border-b-2 border-black/10 pb-2 dark:border-zinc-800">
+                <span className="font-mono text-xs font-black uppercase tracking-wider text-black dark:text-zinc-200">
+                  [ CONCEPTO CLAVE // ARQUITECTURA FIRE ]
                 </span>
               </div>
-              <h4 className="text-[15px] font-semibold text-[#0a0a0a] dark:text-white tracking-tight">
+
+              <h4 className="text-sm font-black text-black dark:text-white uppercase">
                 ¿Por qué en Chile el retiro se divide en dos fases?
               </h4>
-              <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed text-[13px]">
+
+              <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed">
                 En Chile los fondos de pensión obligatorios no se pueden liquidar antes de los 60 (mujeres) o 65 años (hombres). Tu plan financiero se apoya en dos motores:
               </p>
+
               <div className="space-y-2.5 pt-1">
-                <div className="rounded-xl border border-black/[0.05] bg-[#fafaf8] p-3 dark:border-white/[0.06] dark:bg-[#222220]">
-                  <span className="font-semibold text-[#0a0a0a] dark:text-white block text-[13px]">
-                    1. El Puente Líquido (Tu Portafolio Libre)
+                <div className="border-2 border-black bg-neutral-50 p-3 shadow-[2px_2px_0px_0px_#000] dark:border-zinc-700 dark:bg-zinc-950 dark:shadow-[2px_2px_0px_0px_#fff]">
+                  <span className="font-black text-black dark:text-white block uppercase">
+                    1. El Puente Líquido (Portafolio Libre)
                   </span>
-                  <p className="text-neutral-600 dark:text-neutral-400 mt-1 text-[12px] leading-relaxed">
-                    ETFs globales, fondos mutuos o Cuenta 2 que financian tus gastos desde que decides dejar de trabajar hasta cumplir los 60/65 años.
+                  <p className="text-neutral-600 dark:text-neutral-400 mt-1 text-[11px] leading-relaxed">
+                    ETFs globales, fondos mutuos o Cuenta 2 que financian tus gastos desde que dejas de trabajar hasta cumplir los 60/65 años.
                   </p>
                 </div>
 
-                <div className="rounded-xl border border-black/[0.05] bg-[#fafaf8] p-3 dark:border-white/[0.06] dark:bg-[#222220]">
-                  <span className="font-semibold text-[#0a0a0a] dark:text-white block text-[13px]">
-                    2. La Pensión Legal (Retiro Programado AFP + PGU)
+                <div className="border-2 border-black bg-neutral-50 p-3 shadow-[2px_2px_0px_0px_#000] dark:border-zinc-700 dark:bg-zinc-950 dark:shadow-[2px_2px_0px_0px_#fff]">
+                  <span className="font-black text-black dark:text-white block uppercase">
+                    2. La Pensión Legal (AFP + PGU)
                   </span>
-                  <p className="text-neutral-600 dark:text-neutral-400 mt-1 text-[12px] leading-relaxed">
-                    Al cumplir los 60/65 años, tu saldo en AFP pasa a fondos conservadores (Fondo D o E) y se reparte anualmente según las tablas de mortalidad oficiales (CNU). Tu fondo previsional desciende gradualmente pagando tu jubilación, aliviando de manera decisiva la carga sobre tu portafolio libre.
+                  <p className="text-neutral-600 dark:text-neutral-400 mt-1 text-[11px] leading-relaxed">
+                    A los 60/65 años tu saldo en AFP pasa a financiar tu jubilación legal vía retiro programado o renta vitalicia más PGU, aliviando de forma permanente la carga sobre tu portafolio libre.
                   </p>
                 </div>
               </div>
@@ -245,10 +244,10 @@ export default function HomePage() {
               <div className="pt-2">
                 <Link
                   href="/guia-fire-chile"
-                  className="inline-flex items-center space-x-1.5 font-medium text-[13px] text-[#0a0a0a] hover:underline dark:text-white"
+                  className="inline-flex items-center space-x-1.5 border-2 border-black bg-[#facc15] px-3 py-1.5 text-xs font-black uppercase text-black shadow-[2px_2px_0px_0px_#000] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none dark:border-zinc-200"
                 >
-                  <span>Leer la guía completa sobre el movimiento FIRE en Chile</span>
-                  <ArrowRight className="h-3.5 w-3.5 opacity-70" />
+                  <span>Leer la guía completa FIRE Chile</span>
+                  <ArrowRight className="h-3.5 w-3.5 stroke-[3]" />
                 </Link>
               </div>
             </div>

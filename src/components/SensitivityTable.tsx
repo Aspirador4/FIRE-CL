@@ -42,63 +42,63 @@ export function SensitivityTable({ baseInput }: SensitivityTableProps) {
   });
 
   return (
-    <div className="rounded-2xl border border-black/[0.07] bg-white p-6 shadow-[0_1px_2px_rgba(10,10,10,0.02)] dark:border-white/[0.08] dark:bg-[#1a1a19]">
-      <div className="mb-5 flex items-center justify-between border-b border-black/[0.05] pb-3 dark:border-white/[0.06]">
+    <div className="border-2 border-black bg-white p-5 sm:p-6 shadow-[4px_4px_0px_0px_#000] dark:border-zinc-200 dark:bg-zinc-900 dark:shadow-[4px_4px_0px_0px_#fff]">
+      <div className="mb-4 flex items-center justify-between border-b-2 border-black/10 pb-3 dark:border-zinc-800">
         <div>
-          <span className="font-mono text-[11px] uppercase tracking-wider text-neutral-400">
-            Sensibilidad
+          <span className="font-mono text-xs font-black uppercase tracking-wider text-black dark:text-zinc-200">
+            [ SENSIBILIDAD ]
           </span>
           <div className="flex items-center space-x-1.5 mt-0.5">
-            <h3 className="text-[15px] font-semibold tracking-tight text-[#0a0a0a] dark:text-white">
+            <h3 className="text-base font-black tracking-tight text-black dark:text-white uppercase font-sans">
               Ahorro vs Rentabilidad Real
             </h3>
             <InfoTooltip
               title="Matriz de Sensibilidad"
-              content="Muestra en cuántos años alcanzarías la libertad financiera combinando diferentes tasas de ahorro (filas) con diferentes rentabilidades reales anuales de tus inversiones (columnas). Revela que aumentar tu tasa de ahorro acelera tu retiro mucho más rápido que buscar rentabilidades especulativas."
+              content="Muestra en cuántos años alcanzarías la independencia financiera combinando distintas tasas de ahorro con distintas rentabilidades. Aumentar tu tasa de ahorro acelera tu retiro mucho más rápido que especular con rentabilidades improbables."
             />
           </div>
         </div>
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full text-center text-xs">
+        <table className="w-full text-center text-xs font-mono">
           <thead>
-            <tr className="border-b border-black/[0.06] text-neutral-400 dark:border-white/[0.06]">
-              <th className="py-2.5 px-2.5 text-left font-mono font-medium">
-                Tasa Ahorro \ Retorno
+            <tr className="border-b-2 border-black bg-neutral-100 text-black dark:border-zinc-700 dark:bg-zinc-800 dark:text-white">
+              <th className="py-2.5 px-2.5 text-left font-black uppercase">
+                Ahorro \ Retorno
               </th>
               {returns.map((ret) => (
                 <th
                   key={ret}
-                  className="py-2.5 px-2.5 font-mono font-medium tabular-nums"
+                  className="py-2.5 px-2 font-black tabular-nums"
                 >
-                  {ret}% real
+                  {ret}%
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-black/[0.04] dark:divide-white/[0.04]">
+          <tbody className="divide-y divide-black/10 dark:divide-zinc-800">
             {matrix.map((row) => (
-              <tr key={row.savingsRate} className="hover:bg-[#fafaf8] dark:hover:bg-neutral-800/40">
-                <td className="py-2.5 px-2.5 text-left font-semibold text-[#0a0a0a] dark:text-white tabular-nums font-mono">
+              <tr key={row.savingsRate} className="hover:bg-neutral-50 dark:hover:bg-zinc-800/40">
+                <td className="py-2 px-2.5 text-left font-black text-black dark:text-white tabular-nums">
                   {row.savingsRate}%
                 </td>
                 {row.values.map((anos, idx) => {
-                  let badgeStyle = 'bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400';
+                  let badgeStyle = 'border border-black bg-neutral-100 text-neutral-600 dark:bg-zinc-800 dark:text-zinc-400';
                   if (anos !== null) {
                     if (anos <= 11) {
-                      badgeStyle = 'bg-[#0a0a0a] text-white font-medium shadow-sm dark:bg-white dark:text-[#0a0a0a]';
+                      badgeStyle = 'border-2 border-black bg-[#facc15] text-black font-black shadow-[1px_1px_0px_0px_#000]';
                     } else if (anos <= 17) {
-                      badgeStyle = 'border border-emerald-600/25 bg-emerald-50 text-emerald-800 font-medium dark:bg-emerald-950 dark:text-emerald-300';
+                      badgeStyle = 'border border-black bg-emerald-100 text-emerald-950 font-bold dark:bg-emerald-900 dark:text-emerald-100';
                     } else if (anos <= 24) {
-                      badgeStyle = 'border border-black/[0.06] bg-[#fafaf8] text-neutral-800 font-medium dark:bg-neutral-800 dark:text-neutral-200';
+                      badgeStyle = 'border border-black bg-blue-50 text-blue-950 font-bold dark:bg-blue-950 dark:text-blue-100';
                     }
                   }
 
                   return (
-                    <td key={idx} className="py-2 px-1.5">
+                    <td key={idx} className="py-1.5 px-1">
                       <span
-                        className={`inline-block min-w-[50px] rounded-full px-2 py-0.5 text-[11px] tabular-nums font-mono transition-transform duration-100 ${badgeStyle}`}
+                        className={`inline-block min-w-[46px] px-1.5 py-0.5 text-xs tabular-nums font-bold ${badgeStyle}`}
                       >
                         {anos !== null ? `${anos}a` : '>35a'}
                       </span>
@@ -111,9 +111,9 @@ export function SensitivityTable({ baseInput }: SensitivityTableProps) {
         </table>
       </div>
 
-      <p className="mt-4 text-[11px] text-neutral-500 dark:text-neutral-400 leading-relaxed">
-        Aumentar tu tasa de ahorro tiene un impacto más predecible e inmediato que esperar rentabilidades milagrosas del mercado.
-      </p>
+      <div className="mt-4 border-t-2 border-black/10 pt-2 text-xs font-mono font-medium text-neutral-600 dark:border-zinc-800 dark:text-neutral-400 leading-relaxed">
+        Subir la tasa de ahorro produce un impacto matemáticamente garantizado e inmune a las crisis del mercado.
+      </div>
     </div>
   );
 }
